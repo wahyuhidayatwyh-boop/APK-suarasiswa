@@ -1,12 +1,12 @@
-# 🏫 SuaraSiswa — Platform Pengaduan & Bimbingan Konseling Sekolah
+# SuaraSiswa — Platform Pengaduan & Bimbingan Konseling Sekolah
 
 > *"Berani bersuara, bersama mencari solusi."*
 
-SuaraSiswa adalah platform **SaaS Mobile Application** berbasis **Flutter** dan **Cloudflare Serverless Stack** yang dirancang untuk menjembatani komunikasi aman dan rahasia antara **Siswa** dan **Guru BK (Bimbingan & Konseling)** di lingkungan sekolah. Aplikasi ini mendukung penanganan kasus perundungan (*bullying*), penyampaian aspirasi, kritik & saran, chat privat terenkripsi, pelacakan status penanganan laporan secara transparan, serta edukasi siswa.
+SuaraSiswa adalah platform **SaaS Mobile Application** berbasis **Flutter** dan **Cloudflare Serverless Stack** yang dirancang untuk menjembatani komunikasi aman dan rahasia antara **Siswa** dan **Guru BK (Bimbingan & Konseling)** di lingkungan sekolah. Aplikasi ini mendukung penanganan kasus perundungan (*bullying*), penyampaian aspirasi, kritik & saran, chat privat, pelacakan status penanganan laporan secara transparan, serta edukasi siswa.
 
 ---
 
-## 📑 Daftar Isi Dokumentasi Sistem
+## Daftar Isi Dokumentasi Sistem
 
 Sesuai standar rekayasa perangkat lunak, dokumentasi teknis sistem dirangkum dalam tabel berikut:
 
@@ -30,35 +30,35 @@ flowchart TD
     Start([Mulai]) --> Login[Login Akun Google]
     Login --> CheckUser{Sudah terdaftar?}
     
-    CheckUser -- Belum --> RoleSelect[Pilih Peran: Siswa / Guru BK]
-    CheckUser -- Sudah --> CheckRole{Peran Pengguna?}
+    CheckUser -->|Belum| RoleSelect[Pilih Peran: Siswa / Guru BK]
+    CheckUser -->|Sudah| CheckRole{Peran Pengguna?}
     
     %% Alur Siswa
-    RoleSelect -- Siswa --> JoinSchool[Input Kode Sekolah & Kelas]
+    RoleSelect -->|Siswa| JoinSchool[Input Kode Sekolah dan Kelas]
     JoinSchool --> StudentHome[Dashboard Siswa]
-    CheckRole -- Siswa --> StudentHome
+    CheckRole -->|Siswa| StudentHome
     
     StudentHome --> ActionStudent{Pilih Aksi Siswa}
-    ActionStudent --> CreateReport[Buat Laporan / Aspirasi]
-    CreateReport --> UploadProof[Unggah Bukti Foto / Dokumen Opsional]
-    UploadProof --> SubmitReport[Kirim Laporan - Anonim / Identitas]
-    SubmitReport --> TrackReport[Pantau Status & Timeline Laporan]
+    ActionStudent --> CreateReport[Buat Laporan atau Aspirasi]
+    CreateReport --> UploadProof[Unggah Bukti Foto Opsional]
+    UploadProof --> SubmitReport[Kirim Laporan - Anonim atau Identitas]
+    SubmitReport --> TrackReport[Pantau Status dan Timeline Laporan]
     TrackReport --> ChatCounselor[Chat Konseling Privat dengan Guru BK]
     
-    ActionStudent --> ReadEdu[Baca Materi Edukasi & Artikel]
-    ActionStudent --> CheckNotif[Cek Notifikasi & Update Laporan]
+    ActionStudent --> ReadEdu[Baca Materi Edukasi dan Artikel]
+    ActionStudent --> CheckNotif[Cek Notifikasi dan Update Laporan]
     
     %% Alur Guru BK
-    RoleSelect -- Guru BK --> SchoolSetup[Buat Sekolah Baru / Gabung via Undangan]
+    RoleSelect -->|Guru BK| SchoolSetup[Buat Sekolah Baru atau Gabung via Undangan]
     SchoolSetup --> CounselorHome[Dashboard Guru BK]
-    CheckRole -- Guru BK --> CounselorHome
+    CheckRole -->|Guru BK| CounselorHome
     
     CounselorHome --> ActionCounselor{Pilih Aksi Guru BK}
-    ActionCounselor --> ManageClass[Kelola Data Kelas & Siswa]
+    ActionCounselor --> ManageClass[Kelola Data Kelas dan Siswa]
     ActionCounselor --> ManageReports[Review Laporan Masuk]
     ManageReports --> UpdateStatus[Ubah Status: Investigasi / Tindakan / Selesai]
-    UpdateStatus --> ChatStudent[Beri Solusi & Chat dengan Siswa]
-    ActionCounselor --> PublishContent[Publikasikan Artikel & Poster Edukasi]
+    UpdateStatus --> ChatStudent[Beri Solusi dan Chat dengan Siswa]
+    ActionCounselor --> PublishContent[Publikasikan Artikel dan Poster Edukasi]
     ActionCounselor --> InviteCounselor[Undang Rekan Guru BK via Kode]
     
     ChatCounselor --> End([Selesai])
@@ -73,25 +73,25 @@ Menggambarkan fungsionalitas sistem yang dapat diakses oleh masing-masing aktor 
 ```mermaid
 flowchart LR
     subgraph Aktor
-        Siswa["👤 Siswa"]
-        GuruBK["👨‍🏫 Guru BK / Konselor"]
+        Siswa["Siswa"]
+        GuruBK["Guru BK / Konselor"]
     end
 
-    subgraph "Sistem SuaraSiswa"
+    subgraph Sistem["Sistem SuaraSiswa"]
         UC_Auth(["Login dengan Akun Google"])
-        UC_JoinSchool(["Bergabung ke Ruang Sekolah & Kelas"])
-        UC_CreateReport(["Membuat Laporan & Aspirasi"])
-        UC_UploadProof(["Mengunggah Bukti Foto / Dokumen"])
-        UC_TrackReport(["Melacak Status & Riwayat Laporan"])
+        UC_JoinSchool(["Bergabung ke Ruang Sekolah dan Kelas"])
+        UC_CreateReport(["Membuat Laporan dan Aspirasi"])
+        UC_UploadProof(["Mengunggah Bukti Foto"])
+        UC_TrackReport(["Melacak Status dan Riwayat Laporan"])
         UC_Chat(["Chat Konseling Privat Dua Arah"])
-        UC_ReadEdu(["Membaca Konten & Materi Edukasi"])
+        UC_ReadEdu(["Membaca Konten Edukasi"])
         
-        UC_CreateSchool(["Membuat & Mengatur Profil Sekolah"])
-        UC_ManageClass(["Mengelola Data Kelas & Siswa"])
+        UC_CreateSchool(["Membuat dan Mengatur Profil Sekolah"])
+        UC_ManageClass(["Mengelola Data Kelas dan Siswa"])
         UC_InviteCounselor(["Mengundang Guru BK Lain"])
-        UC_ManageReport(["Mengelola & Menindaklanjuti Laporan"])
-        UC_PublishEdu(["Menulis & Menerbitkan Edukasi"])
-        UC_Analytics(["Memantau Statistik & Analisis Kasus"])
+        UC_ManageReport(["Mengelola dan Menindaklanjuti Laporan"])
+        UC_PublishEdu(["Menerbitkan Konten Edukasi"])
+        UC_Analytics(["Memantau Statistik Laporan"])
     end
 
     %% Relasi Siswa
@@ -121,36 +121,36 @@ Menggambarkan urutan aktivitas detail pada proses **Pengiriman & Penanganan Lapo
 
 ```mermaid
 flowchart TD
-    subgraph Siswa
+    subgraph Siswa["Aktivitas Siswa"]
         A1[Buka Formulir Laporan] --> A2[Pilih Kategori: Bullying / Saran / Aspirasi]
         A2 --> A3[Tentukan Visibilitas: Nama Asli / Anonim]
         A3 --> A4[Tulis Deskripsi, Tanggal, dan Lokasi]
-        A4 --> A5[Lampirkan Bukti Foto/File]
+        A4 --> A5[Lampirkan Bukti Foto Opsional]
         A5 --> A6[Klik Kirim Laporan]
     end
 
-    subgraph "Sistem Backend (Cloudflare Worker & D1)"
-        A6 --> B1[Validasi Token JWT & Input Data]
+    subgraph Backend["Sistem Backend (Cloudflare Worker & D1)"]
+        A6 --> B1[Validasi Token JWT dan Header Sekolah]
         B1 --> B2[Simpan File Bukti ke Storage R2]
-        B2 --> B3[Simpan Record Laporan ke Database D1]
-        B3 --> B4[Generate Nomor Laporan Unik]
-        B4 --> B5[Buat Log Timeline Awal: Laporan Diterima]
-        B5 --> B6[Kirim Push Notification ke Guru BK]
+        B2 --> B3[Simpan Data Laporan ke Database D1]
+        B3 --> B4[Generate Nomor Tiket Laporan Unik]
+        B4 --> B5[Buat Log Timeline: Laporan Diterima]
+        B5 --> B6[Kirim Notifikasi ke Guru BK]
     end
 
-    subgraph "Guru BK"
-        B6 --> C1[Terima Notifikasi Laporan Masuk]
-        C1 --> C2[Buka Detail Laporan & Periksa Bukti]
-        C2 --> C3[Ubah Status: Sedang Diinvestigasi]
+    subgraph GuruBK["Aktivitas Guru BK"]
+        B6 --> C1[Terima Notifikasi Laporan Baru]
+        C1 --> C2[Buka Detail Laporan dan Periksa Bukti]
+        C2 --> C3[Perbarui Status: Sedang Diinvestigasi]
         C3 --> C4[Buka Ruang Chat Privat Laporan]
         C4 --> C5[Kirim Pesan Pendampingan ke Siswa]
     end
 
-    subgraph Penyelesaian
+    subgraph Selesai["Penyelesaian Kasus"]
         C5 --> D1[Siswa Membalas Pesan Chat]
-        D1 --> D2[Pertemuan / Tindakan Nyata di Sekolah]
-        D2 --> D3[Guru BK Mengubah Status: Selesai / Ditindaklanjuti]
-        D3 --> D4[Sistem Menandai Status Akhir Laporan]
+        D1 --> D2[Tindakan Konseling di Sekolah]
+        D2 --> D3[Guru BK Mengubah Status: Kasus Selesai]
+        D3 --> D4[Sistem Mencatat Log Status Akhir]
     end
 ```
 
@@ -162,48 +162,48 @@ Menggambarkan interaksi antar objek sistem (*Mobile Client*, *API Gateway*, *Dat
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Siswa as 📱 Siswa (Flutter)
-    participant API as 🌐 Cloudflare Worker (Hono API)
-    participant R2 as 🗄️ Cloudflare R2 Storage
-    participant D1 as 🗃️ Database Cloudflare D1
-    actor GuruBK as 👨‍🏫 Guru BK (Flutter)
+    actor Siswa as Siswa (Flutter)
+    participant API as Cloudflare Worker (Hono API)
+    participant R2 as Cloudflare R2 Storage
+    participant D1 as Database Cloudflare D1
+    actor GuruBK as Guru BK (Flutter)
 
     Siswa->>API: POST /api/uploads (File Bukti Foto)
     activate API
     API->>R2: PutObject(file_stream, unique_key)
     activate R2
-    R2-->>API: URL Bukti Tersimpan (file_url)
+    R2-->>API: file_url tersimpan
     deactivate R2
-    API-->>Siswa: 200 OK (file_url, file_size)
+    API-->>Siswa: 200 OK (file_url)
     deactivate API
 
     Siswa->>API: POST /api/reports (type, category, desc, file_url, is_anonymous)
     activate API
-    API->>API: Verifikasi JWT & School Context Header
-    API->>D1: INSERT INTO reports (...) VALUES (...)
+    API->>API: Verifikasi JWT dan X-School-Id
+    API->>D1: INSERT INTO reports (...)
     activate D1
-    D1-->>API: Report ID & Report Code Generated
+    D1-->>API: Report ID dan Report Code
     deactivate D1
 
-    API->>D1: INSERT INTO report_attachments (report_id, file_url)
+    API->>D1: INSERT INTO report_attachments (...)
     activate D1
     D1-->>API: Attachment Created
     deactivate D1
 
-    API->>D1: INSERT INTO report_timeline (report_id, status='pending')
+    API->>D1: INSERT INTO report_timeline (...)
     activate D1
     D1-->>API: Timeline Created
     deactivate D1
 
-    API->>D1: INSERT INTO notifications (user_id=counselor, title='Laporan Baru')
+    API->>D1: INSERT INTO notifications (...)
     activate D1
     D1-->>API: Notification Saved
     deactivate D1
 
-    API-->>Siswa: 201 Created (report_code, status='pending')
+    API-->>Siswa: 201 Created (report_code)
     deactivate API
 
-    API--)GuruBK: Push Notifikasi Kasus Baru Masuk
+    API->>GuruBK: Push Notifikasi Kasus Baru
 ```
 
 ---
@@ -218,7 +218,7 @@ classDiagram
         +String googleUid
         +String email
         +String name
-        +String? photoUrl
+        +String photoUrl
         +String status
         +DateTime createdAt
     }
@@ -227,7 +227,7 @@ classDiagram
         +String id
         +String name
         +String schoolCode
-        +String? address
+        +String address
         +String ownerUserId
         +String status
     }
@@ -253,16 +253,15 @@ classDiagram
         +String reporterType
         +String priority
         +String status
-        +String? internalNotes
-        +List~ReportAttachment~ attachments
+        +String internalNotes
     }
 
     class ReportAttachment {
         +String id
         +String reportId
         +String fileUrl
-        +String? fileName
-        +int? fileSize
+        +String fileName
+        +int fileSize
     }
 
     class ChatMessage {
@@ -270,7 +269,7 @@ classDiagram
         +String reportId
         +String senderUserId
         +String message
-        +String? attachmentUrl
+        +String attachmentUrl
         +DateTime createdAt
     }
 
@@ -279,8 +278,8 @@ classDiagram
         +String schoolId
         +String title
         +String shortDescription
-        +String? body
-        +String? imageUrl
+        +String body
+        +String imageUrl
         +String type
         +String status
     }
@@ -296,10 +295,10 @@ classDiagram
 
     class ReportRepository {
         -ApiClient apiClient
-        +getReports() Future
-        +getReportDetail(id) Future
-        +createReport(data) Future
-        +updateStatus(id, status) Future
+        +getReports()
+        +getReportDetail(id)
+        +createReport(data)
+        +updateStatus(id, status)
     }
 
     UserModel "1" --> "*" ReportModel : melapor
@@ -327,129 +326,164 @@ erDiagram
     users ||--o{ counselor_profiles : "profile_of"
     schools ||--o{ counselor_profiles : "employs"
     schools ||--o{ counselor_invites : "issued_by"
-    
     schools ||--o{ reports : "recorded_at"
     users ||--o{ reports : "submitted_by"
     reports ||--o{ report_attachments : "has_evidence"
     reports ||--o{ report_messages : "contains_chat"
     reports ||--o{ report_timeline : "tracks_progress"
-    
     schools ||--o{ contents : "publishes"
     users ||--o{ contents : "authored_by"
     users ||--o{ notifications : "receives"
     users ||--o{ device_tokens : "owns_device"
 
     users {
-        TEXT id PK
-        TEXT google_uid UK
-        TEXT email
-        TEXT name
-        TEXT photo_url
-        TEXT auth_provider
-        TEXT status
-        DATETIME created_at
+        string id PK
+        string google_uid
+        string email
+        string name
+        string photo_url
+        string auth_provider
+        string status
+        string created_at
     }
 
     schools {
-        TEXT id PK
-        TEXT name
-        TEXT school_code UK
-        TEXT logo_url
-        TEXT address
-        TEXT owner_user_id FK
-        TEXT status
-        DATETIME created_at
+        string id PK
+        string name
+        string school_code
+        string logo_url
+        string address
+        string owner_user_id FK
+        string status
+        string created_at
     }
 
     school_memberships {
-        TEXT id PK
-        TEXT school_id FK
-        TEXT user_id FK
-        TEXT role
-        INTEGER is_owner
-        TEXT status
-        DATETIME joined_at
+        string id PK
+        string school_id FK
+        string user_id FK
+        string role
+        int is_owner
+        string status
+        string joined_at
     }
 
     classes {
-        TEXT id PK
-        TEXT school_id FK
-        TEXT name
-        TEXT grade
-        TEXT join_code UK
-        TEXT status
-        DATETIME created_at
+        string id PK
+        string school_id FK
+        string name
+        string grade
+        string join_code
+        string status
+        string created_at
+    }
+
+    student_profiles {
+        string id PK
+        string user_id FK
+        string school_id FK
+        string class_id FK
+        string student_id
+        string name
+        string phone
+    }
+
+    counselor_profiles {
+        string id PK
+        string user_id FK
+        string school_id FK
+        string name
+        string employee_id
+        string phone
+    }
+
+    counselor_invites {
+        string id PK
+        string school_id FK
+        string code_hash
+        string created_by FK
+        string expires_at
+        string status
     }
 
     reports {
-        TEXT id PK
-        TEXT school_id FK
-        TEXT student_id FK
-        TEXT report_code UK
-        TEXT type
-        TEXT category
-        TEXT description
-        DATETIME incident_date
-        TEXT incident_location
-        TEXT reporter_type
-        TEXT priority
-        TEXT status
-        TEXT internal_notes
-        DATETIME created_at
+        string id PK
+        string school_id FK
+        string student_id FK
+        string report_code
+        string type
+        string category
+        string description
+        string incident_date
+        string incident_location
+        string reporter_type
+        string priority
+        string status
+        string internal_notes
+        string created_at
     }
 
     report_attachments {
-        TEXT id PK
-        TEXT report_id FK
-        TEXT school_id FK
-        TEXT file_url
-        TEXT file_name
-        INTEGER file_size
-        DATETIME created_at
+        string id PK
+        string report_id FK
+        string school_id FK
+        string file_url
+        string file_name
+        int file_size
+        string created_at
     }
 
     report_messages {
-        TEXT id PK
-        TEXT report_id FK
-        TEXT school_id FK
-        TEXT sender_user_id FK
-        TEXT message
-        TEXT attachment_url
-        DATETIME created_at
+        string id PK
+        string report_id FK
+        string school_id FK
+        string sender_user_id FK
+        string message
+        string attachment_url
+        string created_at
     }
 
     report_timeline {
-        TEXT id PK
-        TEXT report_id FK
-        TEXT school_id FK
-        TEXT title
-        TEXT description
-        DATETIME created_at
+        string id PK
+        string report_id FK
+        string school_id FK
+        string title
+        string description
+        string created_at
     }
 
     contents {
-        TEXT id PK
-        TEXT school_id FK
-        TEXT author_id FK
-        TEXT title
-        TEXT short_description
-        TEXT body
-        TEXT image_url
-        TEXT type
-        TEXT status
-        INTEGER views_count
+        string id PK
+        string school_id FK
+        string author_id FK
+        string title
+        string short_description
+        string body
+        string image_url
+        string type
+        string status
+        int views_count
     }
 
     notifications {
-        TEXT id PK
-        TEXT user_id FK
-        TEXT school_id FK
-        TEXT title
-        TEXT body
-        TEXT type
-        TEXT reference_id
-        INTEGER is_read
-        DATETIME created_at
+        string id PK
+        string user_id FK
+        string school_id FK
+        string title
+        string body
+        string type
+        string reference_id
+        int is_read
+        string created_at
+    }
+
+    device_tokens {
+        string id PK
+        string user_id FK
+        string school_id FK
+        string fcm_token
+        string platform
+        string created_at
     }
 ```
 
@@ -461,10 +495,10 @@ Menjelaskan arsitektur perangkat lunak berbasis Cloud Native Serverless:
 ```mermaid
 flowchart TD
     subgraph ClientLayer["1. Presentation Layer (Mobile Client)"]
-        FlutterApp["📱 Flutter Application (Android / Cross-Platform)"]
+        FlutterApp["Flutter Application (Android / Cross-Platform)"]
         RiverpodState["State Management: Flutter Riverpod"]
         GoRoute["Routing: GoRouter"]
-        SecureStore["Local Storage: Flutter Secure Storage & SharedPreferences"]
+        SecureStore["Local Storage: Secure Storage & SharedPreferences"]
     end
 
     subgraph NetworkGateway["2. Gateway & Edge Security Layer"]
@@ -481,13 +515,13 @@ flowchart TD
     end
 
     subgraph StorageLayer["4. Cloud Data & Storage Layer"]
-        D1_DB[("🗄️ Cloudflare D1 Database\n(Serverless SQLite Edge)")]
-        R2_Bucket[("📦 Cloudflare R2 Object Storage\n(Evidence Images & Media)")]
+        D1_DB[("Cloudflare D1 Database<br/>Serverless SQLite Edge")]
+        R2_Bucket[("Cloudflare R2 Object Storage<br/>Evidence Images & Media")]
     end
 
     subgraph ThirdParty["5. External Services"]
-        GoogleOAuth["🔐 Google Identity Services (OAuth 2.0)"]
-        FirebaseFCM["🔔 Firebase Cloud Messaging (FCM Notifications)"]
+        GoogleOAuth["Google Identity Services (OAuth 2.0)"]
+        FirebaseFCM["Firebase Cloud Messaging (FCM Notifications)"]
     end
 
     FlutterApp <--> NetworkGateway
@@ -505,7 +539,7 @@ flowchart TD
 
 ---
 
-## 🚀 Panduan Memulai (Getting Started)
+## Panduan Memulai (Getting Started)
 
 ### Prasyarat
 * Flutter SDK (versi >= 3.22.0)
@@ -546,12 +580,12 @@ npm run dev
 
 ---
 
-## 🔒 Keamanan & Privasi
+## Keamanan & Privasi
 * **Privasi Siswa Terjamin**: Siswa dapat memilih untuk melapor sebagai **Anonim**. Identitas siswa disamarkan pada antarmuka Guru BK.
 * **Terenkripsi**: Komunikasi data menggunakan protokol HTTPS/TLS dan autentikasi berbasis stateless JWT token.
 * **Isolasi Multi-Tenant**: Akses antar sekolah diisolasi melalui validasi `X-School-Id` pada header setiap request API.
 
 ---
 
-## 📄 Lisensi
+## Lisensi
 Hak Cipta © 2026 **SuaraSiswa Project**. Dilindungi undang-undang.
