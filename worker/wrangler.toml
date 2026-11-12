@@ -1,0 +1,20 @@
+name = "suara-siswa-backend"
+main = "src/index.ts"
+compatibility_date = "2024-04-01"
+
+[vars]
+ENVIRONMENT = "development"
+ALLOWED_ORIGIN = "*"
+# Catatan: JWT_SECRET diatur secara aman via .dev.vars (lokal) atau `npx wrangler secret put JWT_SECRET` (production)
+
+# D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "suarasiswa_db"
+database_id = "3160f170-0eed-4cf2-a34e-4b2076e3ea97"
+migrations_dir = "src/db/migrations"
+
+# R2 Storage Binding (Can be enabled once R2 is turned on in Cloudflare dashboard)
+# [[r2_buckets]]
+# binding = "STORAGE_BUCKET"
+# bucket_name = "suarasiswa-storage"

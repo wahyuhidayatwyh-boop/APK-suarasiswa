@@ -1,0 +1,77 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+Thumbs.db
+Desktop.ini
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Android
+**/android/.gradle/
+**/android/local.properties
+**/android/key.properties
+**/android/hs_err_pid*.log
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+*.keystore
+*.jks
+google-services.json
+
+# iOS
+**/ios/.generated/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/profile/
+**/ios/release/
+GoogleService-Info.plist
+
+# Node / Cloudflare Workers
+node_modules/
+**/node_modules/
+.wrangler/
+**/.wrangler/
+.dev.vars*
+!.dev.vars.example
+
+# Environment and secrets
+.env*
+!.env.example
+secrets.json
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
