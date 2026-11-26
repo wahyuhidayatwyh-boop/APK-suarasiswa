@@ -26,12 +26,11 @@ class MilestoneStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9), width: 1.2),
-        boxShadow: AppColors.elevation1,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.borderStrong),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +42,7 @@ class MilestoneStepper extends StatelessWidget {
                 final isPassed = stepBefore < currentStepIndex;
                 return Expanded(
                   child: Container(
-                    height: 3,
+                    height: 2.5,
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     decoration: BoxDecoration(
                       color: isPassed
@@ -60,8 +59,8 @@ class MilestoneStepper extends StatelessWidget {
               final isCurrent = stepIndex == currentStepIndex;
 
               return Container(
-                width: 32,
-                height: 32,
+                width: 28,
+                height: 28,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isCompleted
@@ -73,29 +72,20 @@ class MilestoneStepper extends StatelessWidget {
                     color: isCompleted || isCurrent
                         ? AppColors.primary
                         : AppColors.slate300,
-                    width: 2,
+                    width: 1.5,
                   ),
-                  boxShadow: isCurrent
-                      ? [
-                          BoxShadow(
-                            color: AppColors.primary.withOpacity(0.35),
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
-                          ),
-                        ]
-                      : null,
                 ),
                 child: Center(
                   child: isCompleted
                       ? const Icon(
                           Icons.check_rounded,
-                          size: 16,
+                          size: 15,
                           color: Colors.white,
                         )
                       : Text(
                           '${stepIndex + 1}',
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 11,
                             fontWeight: FontWeight.w700,
                             color: isCurrent
                                 ? Colors.white
@@ -106,7 +96,7 @@ class MilestoneStepper extends StatelessWidget {
               );
             }),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(steps.length, (index) {

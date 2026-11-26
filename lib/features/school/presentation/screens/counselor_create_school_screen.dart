@@ -99,17 +99,17 @@ class _CounselorCreateSchoolScreenState
               children: [
                 // Info Banner
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: AppColors.lightRed,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: AppColors.redBorder),
                   ),
                   child: const Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.info_outline, color: AppColors.primary, size: 22),
-                      SizedBox(width: 12),
+                      Icon(Icons.info_outline, color: AppColors.primary, size: 20),
+                      SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           'Sebagai pembuat ruang, Anda akan menjadi penanggung jawab (Owner) ruang sekolah ini. Anda dapat mengundang Guru BK lain dan mengelola kelas.',

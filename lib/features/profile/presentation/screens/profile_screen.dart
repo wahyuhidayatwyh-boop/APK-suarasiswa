@@ -646,7 +646,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 icon: const Icon(Icons.logout_rounded,
                     size: 18, color: AppColors.primary),
                 height: 48,
-                borderRadius: 24,
+                borderRadius: 12,
                 onPressed: () => _showLogoutDialog(context),
               ),
 

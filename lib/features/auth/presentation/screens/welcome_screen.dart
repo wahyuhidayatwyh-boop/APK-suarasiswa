@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/google_logo.dart';
 
 class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
@@ -10,19 +11,18 @@ class WelcomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-    final screenHeight = MediaQuery.of(context).size.height;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // ─── 1. Natural Photo Header with Soft Feathering to White ─────
-          // Photo is shifted up to center the faces, and white boundary is lowered so faces are completely clear
+          // ─── Photo Header with Subtle Vignette ────────────────────────────
           Positioned(
             top: 0,
             left: 0,
             right: 0,
-            height: screenHeight * 0.52,
+            height: size.height * 0.46,
             child: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
@@ -31,159 +31,170 @@ class WelcomeScreen extends ConsumerWidget {
                   colors: [
                     Colors.black,
                     Colors.black,
-                    Color(0xD9000000), // starts gentle fade near bottom
-                    Color(0x55000000), // soft transition
-                    Colors.transparent, // fully transparent white right above badge
+                    Color(0xD9000000),
+                    Color(0x66000000),
+                    Colors.transparent,
                   ],
-                  stops: [0.0, 0.62, 0.80, 0.93, 1.0],
+                  stops: [0.0, 0.50, 0.72, 0.88, 1.0],
                 ).createShader(bounds);
               },
               blendMode: BlendMode.dstIn,
               child: Image.asset(
                 'assets/images/login.png',
                 fit: BoxFit.cover,
-                alignment: const Alignment(0, 0.25), // elevates photo to center student & counselor faces
+                alignment: const Alignment(0, -0.15),
               ),
             ),
           ),
 
-          // ─── 2. Foreground UI Elements ────────────────────────────────
+          // ─── Main Content ────────────────────────────────────────────────
           SafeArea(
-            child: Column(
-              children: [
-                // Top Branding Area: Logo + App Name + Subtitle (compact to avoid overlapping faces)
-                SizedBox(
-                  height: screenHeight * 0.28,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Circular Logo
-                      Container(
-                        width: 58,
-                        height: 58,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.08),
-                              blurRadius: 14,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: ClipOval(
-                          child: Padding(
-                            padding: const EdgeInsets.all(9),
-                            child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-
-                      // Title
-                      RichText(
-                        text: const TextSpan(
-                          text: 'Suara',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.textPrimary,
-                            letterSpacing: -0.5,
-                          ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            TextSpan(
-                              text: 'Siswa',
-                              style: TextStyle(color: AppColors.primary),
+                            const SizedBox(height: 12),
+
+                            // Top Brand Minimal Header
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 38,
+                                  height: 38,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: AppColors.borderStrong,
+                                      width: 1,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.06),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(6),
+                                      child: Image.asset(
+                                        'assets/images/logo.png',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                RichText(
+                                  text: const TextSpan(
+                                    text: 'Suara',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.slate900,
+                                      letterSpacing: -0.4,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: 'Siswa',
+                                        style: TextStyle(color: AppColors.primary),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
+
+                            // Space to let the photo hero breathe
+                            SizedBox(height: size.height * 0.22),
+
+                            // Headline and Description
+                            const Text(
+                              'Ruang Aman Suara & Aspirasi Sekolah',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.slate900,
+                                letterSpacing: -0.5,
+                                height: 1.25,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Platform kolaborasi antara siswa dan Guru BK untuk pencegahan perundungan dan pelayanan konseling yang aman.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.slate600,
+                                height: 1.45,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+
+                            // Interactive Role Cards (Tapping either opens login)
+                            _RoleHighlightCard(
+                              icon: Icons.school_outlined,
+                              iconColor: const Color(0xFF2563EB),
+                              iconBg: const Color(0xFFEFF6FF),
+                              title: 'Untuk Siswa',
+                              subtitle:
+                                  'Sampaikan laporan dan aspirasi secara terarah dan terjaga kerahasiaannya.',
+                              onTap: () => context.push('/login'),
+                            ),
+                            const SizedBox(height: 10),
+                            _RoleHighlightCard(
+                              icon: Icons.supervisor_account_outlined,
+                              iconColor: AppColors.primary,
+                              iconBg: AppColors.lightRed,
+                              title: 'Untuk Guru BK',
+                              subtitle:
+                                  'Kelola ruang sekolah, tindak lanjuti laporan, dan dampingi peserta didik.',
+                              onTap: () => context.push('/login'),
+                            ),
+
+                            const Spacer(),
+                            const SizedBox(height: 24),
+
+                            // Primary Google Sign-In Button
+                            _GoogleSignInButton(
+                              onPressed: () => context.push('/login'),
+                            ),
+                            const SizedBox(height: 12),
+
+                            // Legal Privacy Notice
+                            const Text(
+                              'Dengan melanjutkan, Anda menyetujui Ketentuan Layanan serta Kebijakan Privasi SuaraSiswa.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: AppColors.slate400,
+                                height: 1.4,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 3),
-
-                      // Subtitle
-                      const Text(
-                        'Platform aspirasi & perlindungan siswa',
-                        style: TextStyle(
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Space for faces to be visible without any text obstruction
-                SizedBox(height: screenHeight * 0.16),
-
-                // Bottom Area: Starts right below the natural fade
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
-                    child: Column(
-                      children: [
-                        // Verification Badge: positioned right under the photo fade
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                          decoration: BoxDecoration(
-                            color: AppColors.lightRed,
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(color: AppColors.redBorder),
-                          ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.verified_user_rounded, size: 14, color: AppColors.primary),
-                              SizedBox(width: 6),
-                              Text(
-                                'Terverifikasi Guru BK & Aman',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Role Cards
-                        _RoleCard(
-                          icon: Icons.school_outlined,
-                          iconColor: AppColors.primary,
-                          iconBg: AppColors.lightRed,
-                          title: 'Guru BK',
-                          subtitle: 'Kelola laporan, buat ruang sekolah & pantau aspirasi siswa',
-                        ),
-                        const SizedBox(height: 10),
-                        _RoleCard(
-                          icon: Icons.people_alt_outlined,
-                          iconColor: AppColors.info,
-                          iconBg: AppColors.infoLight,
-                          title: 'Siswa',
-                          subtitle: 'Sampaikan laporan, aspirasi & kendala secara aman & rahasia',
-                        ),
-
-                        const Spacer(),
-
-                        // Google Sign-In Button
-                        _GoogleSignInButton(onPressed: () => context.push('/login')),
-                        const SizedBox(height: 12),
-
-                        // Legal Disclaimer
-                        const Text(
-                          'Dengan masuk, kamu menyetujui Ketentuan Layanan & Kebijakan Privasi SuaraSiswa.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 11, color: AppColors.textTertiary, height: 1.4),
-                        ),
-                      ],
                     ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],
@@ -192,53 +203,82 @@ class WelcomeScreen extends ConsumerWidget {
   }
 }
 
-class _RoleCard extends StatelessWidget {
+class _RoleHighlightCard extends StatelessWidget {
   final IconData icon;
-  final Color iconColor, iconBg;
-  final String title, subtitle;
+  final Color iconColor;
+  final Color iconBg;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
 
-  const _RoleCard({
+  const _RoleHighlightCard({
     required this.icon,
     required this.iconColor,
     required this.iconBg,
     required this.title,
     required this.subtitle,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(9),
-            decoration: BoxDecoration(color: iconBg, borderRadius: BorderRadius.circular(10)),
-            child: Icon(icon, size: 20, color: iconColor),
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: AppColors.slate50,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppColors.borderStrong),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: iconBg,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.3),
+                child: Icon(icon, size: 20, color: iconColor),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.slate900,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.slate600,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(
+                Icons.chevron_right_rounded,
+                size: 20,
+                color: AppColors.slate400,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -252,28 +292,31 @@ class _GoogleSignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 50,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.slate900,
           foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 22,
-              height: 22,
-              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-              child: const Center(
-                child: Text('G', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w900, fontSize: 14)),
+            GoogleLogo(size: 20),
+            SizedBox(width: 12),
+            Text(
+              'Lanjutkan dengan Google',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+                color: Colors.white,
               ),
             ),
-            const SizedBox(width: 10),
-            const Text('Masuk dengan Google', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
           ],
         ),
       ),

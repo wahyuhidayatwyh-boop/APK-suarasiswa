@@ -101,7 +101,7 @@ class _SelectClassBottomSheetState extends ConsumerState<_SelectClassBottomSheet
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text('Keluar dari Kelas?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
         content: const Text(
           'Anda akan melepaskan keanggotaan rombel kelas saat ini. Akun dan sekolah Anda tetap tersimpan.',
@@ -168,7 +168,7 @@ class _SelectClassBottomSheetState extends ConsumerState<_SelectClassBottomSheet
       ),
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       padding: EdgeInsets.only(
         left: 20,
@@ -458,7 +458,7 @@ class _SelectClassBottomSheetState extends ConsumerState<_SelectClassBottomSheet
                     ),
                   )
                 else
-                  const Icon(Icons.arrow_forward_ios_rounded, size: 13, color: AppColors.slate400),
+                  const Icon(Icons.radio_button_unchecked, size: 18, color: AppColors.slate300),
               ],
             ),
           ),

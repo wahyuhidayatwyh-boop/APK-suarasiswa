@@ -35,7 +35,7 @@ class _CounselorContentScreenState extends ConsumerState<CounselorContentScreen>
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
         return StatefulBuilder(
@@ -348,7 +348,7 @@ class _CounselorContentScreenState extends ConsumerState<CounselorContentScreen>
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
         return StatefulBuilder(
@@ -629,7 +629,7 @@ class _CounselorContentScreenState extends ConsumerState<CounselorContentScreen>
     showDialog(
       context: context,
       builder: (dlgCtx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Row(
           children: [
             Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 24),
@@ -846,12 +846,12 @@ class _CounselorContentScreenState extends ConsumerState<CounselorContentScreen>
     final isSelected = _selectedTypeFilter == type;
     return InkWell(
       onTap: () => setState(() => _selectedTypeFilter = type),
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(10),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primary : Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.border,
           ),

@@ -30,13 +30,13 @@ class StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final effectiveIconBg = iconBgColor ??
         (isDark
-            ? iconColor.withOpacity(0.2)
-            : iconColor.withOpacity(0.1));
+            ? iconColor.withOpacity(0.15)
+            : iconColor.withOpacity(0.08));
 
     return ModernCard(
       variant: isDark ? ModernCardVariant.dark : ModernCardVariant.elevated,
-      borderRadius: 16,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      borderRadius: 14,
+      padding: const EdgeInsets.all(12),
       onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,35 +46,22 @@ class StatCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: 32,
-                height: 32,
+                width: 34,
+                height: 34,
                 decoration: BoxDecoration(
                   color: effectiveIconBg,
-                  borderRadius: BorderRadius.circular(9),
-                  border: Border.all(
-                    color: isDark
-                        ? Colors.white.withOpacity(0.08)
-                        : iconColor.withOpacity(0.18),
-                    width: 1,
-                  ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
                   icon,
-                  size: 16,
+                  size: 18,
                   color: iconColor,
                 ),
               ),
-              if (trailing != null)
-                trailing!
-              else if (onTap != null)
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 11,
-                  color: isDark ? AppColors.darkTextMuted : AppColors.slate400,
-                ),
+              ?trailing,
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +73,7 @@ class StatCard extends StatelessWidget {
                   child: Text(
                     value,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.w800,
                       color: isDark ? Colors.white : AppColors.slate900,
                       letterSpacing: -0.5,
@@ -99,20 +86,20 @@ class StatCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: 11.5,
                     fontWeight: FontWeight.w600,
                     color: isDark ? AppColors.darkTextMuted : AppColors.slate600,
                   ),
                 ),
                 if (subtitle != null) ...[
-                  const SizedBox(height: 1),
+                  const SizedBox(height: 2),
                   Text(
                     subtitle!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 9.5,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
                       color: isDark ? Colors.white54 : AppColors.slate400,
                     ),
                   ),

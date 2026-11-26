@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/google_logo.dart';
 import '../auth_controller.dart';
 
 /// Halaman "Masuk dengan Google"
@@ -19,16 +20,52 @@ class GoogleLoginScreen extends ConsumerStatefulWidget {
 class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
   bool _isLoading = false;
 
+  /// Ubah ke `false` (atau hapus) jika sudah selesai mengecek tampilan desain.
+  static const bool _showDemoButtons = true;
+
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    // Android identifies the app through its package name and signing SHA-1.
-    // Passing the web client ID here makes the Android plugin request an ID
-    // token for that client, which results in ApiException: 10 when it is not
-    // configured for this Android application.
     clientId: kIsWeb
         ? '723964448592-s3qqu5jhj2bmb8vpc1n5ahg9cbh2gm11.apps.googleusercontent.com'
         : null,
     scopes: ['email', 'profile'],
   );
+
+  // ─── Mode Demo / Pratinjau Desain Tanpa Google OAuth ─────────────────────
+  Future<void> _loginAsDemo({required bool isCounselor}) async {
+    setState(() => _isLoading = true);
+    try {
+      final name = isCounselor ? 'Dra. Rahmawati, M.Pd' : 'Budi Prakoso';
+      final email = isCounselor
+          ? 'counselor.demo@suarasiswa.id'
+          : 'student.demo@suarasiswa.id';
+      final uid = isCounselor ? 'demo_counselor_999' : 'demo_student_999';
+
+      final success = await ref.read(authControllerProvider.notifier).loginWithGoogle(
+            googleUid: uid,
+            email: email,
+            name: name,
+          );
+
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+
+      if (success) {
+        final authState = ref.read(authControllerProvider);
+        if (authState.membership != null) {
+          context.go(authState.isCounselor ? '/counselor' : '/student');
+        } else {
+          context.go(isCounselor ? '/counselor' : '/student');
+        }
+      } else {
+        context.go(isCounselor ? '/counselor' : '/student');
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        context.go(isCounselor ? '/counselor' : '/student');
+      }
+    }
+  }
 
   // ─── Direct Login Processing ──────────────────────────────────────────────
   Future<void> _processLoginWithGoogle({
@@ -82,7 +119,6 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // Selalu sign-out sesi lokal sebelumnya agar Google memunculkan dialog pemilihan akun
       try {
         await _googleSignIn.signOut();
       } catch (_) {}
@@ -134,7 +170,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => _ModernRoleSelectionSheet(
+      builder: (ctx) => _RoleSelectionSheet(
         userName: name,
         userEmail: email,
         userPhoto: photoUrl,
@@ -159,9 +195,10 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        scrolledUnderElevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+          icon: const Icon(Icons.arrow_back_rounded, color: AppColors.slate800),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -171,190 +208,285 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
           },
         ),
         title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(6),
-              child: Image.asset('assets/images/logo.png', width: 24, height: 24, fit: BoxFit.contain),
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 22,
+                height: 22,
+                fit: BoxFit.contain,
+              ),
             ),
             const SizedBox(width: 8),
             const Text(
               'SuaraSiswa',
-              style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w700, fontSize: 16),
+              style: TextStyle(
+                color: AppColors.slate900,
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
             ),
           ],
         ),
+        centerTitle: false,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Column(
-            children: [
-              const SizedBox(height: 36),
-
-              // ─── Illustration ──────────────────────────────────────
-              Container(
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.06),
-                      blurRadius: 16,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
                 ),
-                child: ClipOval(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 20),
 
-              // ─── Heading ───────────────────────────────────────────
-              const Text(
-                'Masuk ke SuaraSiswa',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                  letterSpacing: -0.5,
-                  height: 1.2,
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Gunakan akun Google Anda untuk masuk dengan aman. Perlindungan data dan privasi siswa terjamin 100%.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: AppColors.textSecondary, height: 1.5),
-              ),
-              const SizedBox(height: 40),
-
-              // ─── Satu Tombol Utama: Lanjutkan dengan Google (Grab Style) ───
-              _GoogleButton(isLoading: _isLoading, onPressed: _isLoading ? null : _signInWithGoogle),
-              const SizedBox(height: 28),
-
-              // Divider
-              Row(
-                children: [
-                  Expanded(child: Divider(color: AppColors.border.withOpacity(0.8))),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 14),
-                    child: Text(
-                      'STANDAR KEAMANAN',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textTertiary,
-                        letterSpacing: 0.8,
+                      // Clean Brand Icon Surface
+                      Center(
+                        child: Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: AppColors.borderStrong,
+                              width: 1,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.slate900.withOpacity(0.04),
+                                blurRadius: 16,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Image.asset(
+                                'assets/images/logo.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 24),
+
+                      // Title & Empathetic Subtitle
+                      const Text(
+                        'Masuk ke SuaraSiswa',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.slate900,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Gunakan akun Google Anda untuk mengakses ruang sekolah. Data laporan dan aspirasi Anda dirahasiakan dan ditangani oleh pihak berwenang.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          color: AppColors.slate600,
+                          height: 1.45,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+
+                      // Google Sign-In Action
+                      _OfficialGoogleButton(
+                        isLoading: _isLoading,
+                        onPressed: _isLoading ? null : _signInWithGoogle,
+                      ),
+
+                      // Mode Pratinjau Desain (Bypass untuk cek tampilan UI)
+                      if (_showDemoButtons) ...[
+                        const SizedBox(height: 18),
+                        Row(
+                          children: [
+                            const Expanded(child: Divider(color: AppColors.border)),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'ATAU CEK PRATINJAU DESAIN',
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.slate400,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                            ),
+                            const Expanded(child: Divider(color: AppColors.border)),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  side: const BorderSide(color: Color(0xFF93C5FD)),
+                                  backgroundColor: const Color(0xFFEFF6FF),
+                                ),
+                                icon: const Icon(Icons.school_outlined, size: 16, color: Color(0xFF2563EB)),
+                                label: const Text(
+                                  'Tampilan Siswa',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF1E40AF),
+                                  ),
+                                ),
+                                onPressed: _isLoading ? null : () => _loginAsDemo(isCounselor: false),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  side: const BorderSide(color: Color(0xFFFECACA)),
+                                  backgroundColor: const Color(0xFFFEF2F2),
+                                ),
+                                icon: const Icon(Icons.psychology_outlined, size: 16, color: AppColors.primary),
+                                label: const Text(
+                                  'Tampilan Guru BK',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                onPressed: _isLoading ? null : () => _loginAsDemo(isCounselor: true),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      const SizedBox(height: 32),
+
+                      // Trust Guarantees
+                      const Text(
+                        'Jaminan Keamanan & Privasi',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.slate800,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+
+                      const _TrustItem(
+                        icon: Icons.lock_outline_rounded,
+                        title: 'Kerahasiaan Terjaga',
+                        subtitle:
+                            'Laporan terlindungi dan hanya dapat ditindaklanjuti oleh Guru BK resmi sekolah.',
+                      ),
+                      const SizedBox(height: 12),
+                      const _TrustItem(
+                        icon: Icons.visibility_off_outlined,
+                        title: 'Dukungan Anonimitas',
+                        subtitle:
+                            'Siswa dapat menyampaikan aspirasi tanpa menampilkan identitas publik.',
+                      ),
+                      const SizedBox(height: 12),
+                      const _TrustItem(
+                        icon: Icons.domain_verification_outlined,
+                        title: 'Terhubung ke Sekolah Resmi',
+                        subtitle:
+                            'Setiap ruang sekolah dikelola secara mandiri oleh tim pendidik sekolah bersangkutan.',
+                      ),
+
+                      const Spacer(),
+                      const SizedBox(height: 24),
+
+                      // Legal Footer
+                      const Text(
+                        'Dengan masuk, Anda menyetujui Ketentuan Layanan serta Kebijakan Privasi SuaraSiswa.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AppColors.slate400,
+                          height: 1.4,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
                   ),
-                  Expanded(child: Divider(color: AppColors.border.withOpacity(0.8))),
-                ],
+                ),
               ),
-              const SizedBox(height: 20),
-
-              // ─── Security Features ─────────────────────────────────
-              _SecurityFeature(
-                icon: Icons.shield_outlined,
-                title: 'Data Rahasia & Terenkripsi',
-                subtitle: 'Aspirasi dan laporan terlindungi dengan standar enkripsi modern',
-              ),
-              const SizedBox(height: 12),
-              _SecurityFeature(
-                icon: Icons.visibility_off_outlined,
-                title: 'Mode Anonim Aman',
-                subtitle: 'Identitas siswa dirahasiakan dan tidak tampak oleh sesama murid',
-              ),
-              const SizedBox(height: 12),
-              _SecurityFeature(
-                icon: Icons.verified_user_outlined,
-                title: 'Akses Khusus Guru BK Terverifikasi',
-                subtitle: 'Hanya staf pendidik yang memiliki wewenang untuk menindaklanjuti',
-              ),
-
-              const Spacer(),
-
-              // ─── Legal ────────────────────────────────────────────
-              const Text(
-                'Dengan masuk, Anda menyetujui Ketentuan Layanan & Kebijakan Privasi SuaraSiswa.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 11, color: AppColors.textTertiary, height: 1.4),
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
   }
 }
 
-// ─── Google Sign-In Button ─────────────────────────────────────────────────────
-class _GoogleButton extends StatelessWidget {
+// ─── Clean Google Sign-In Button (Adhering to Google Guidelines) ───────────────
+class _OfficialGoogleButton extends StatelessWidget {
   final bool isLoading;
   final VoidCallback? onPressed;
 
-  const _GoogleButton({required this.isLoading, this.onPressed});
+  const _OfficialGoogleButton({required this.isLoading, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: ElevatedButton(
+      height: 50,
+      child: OutlinedButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 15),
+        style: OutlinedButton.styleFrom(
           backgroundColor: Colors.white,
-          foregroundColor: AppColors.textPrimary,
-          elevation: 2,
-          shadowColor: Colors.black.withOpacity(0.08),
-          side: const BorderSide(color: Color(0xFFE2E8F0), width: 1.5),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          foregroundColor: AppColors.slate900,
+          side: const BorderSide(color: AppColors.borderStrong, width: 1.2),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
         ),
         child: isLoading
             ? const SizedBox(
                 width: 22,
                 height: 22,
-                child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.primary),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.2,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                ),
               )
-            : Row(
+            : const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Google "G" official colored logo representation
-                  Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      border: Border.all(color: const Color(0xFFE2E8F0)),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'G',
-                        style: TextStyle(
-                          color: Color(0xFF4285F4),
-                          fontWeight: FontWeight.w900,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Text(
+                  GoogleLogo(size: 20),
+                  SizedBox(width: 12),
+                  Text(
                     'Lanjutkan dengan Google',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 15,
-                      color: AppColors.textPrimary,
+                      color: AppColors.slate900,
                     ),
                   ),
                 ],
@@ -364,13 +496,13 @@ class _GoogleButton extends StatelessWidget {
   }
 }
 
-// ─── Security Feature Row ──────────────────────────────────────────────────────
-class _SecurityFeature extends StatelessWidget {
+// ─── Trust Item ───────────────────────────────────────────────────────────────
+class _TrustItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
 
-  const _SecurityFeature({
+  const _TrustItem({
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -382,12 +514,13 @@ class _SecurityFeature extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          width: 34,
+          height: 34,
           decoration: BoxDecoration(
-            color: const Color(0xFFF1F5F9),
-            borderRadius: BorderRadius.circular(10),
+            color: AppColors.slate100,
+            borderRadius: BorderRadius.circular(9),
           ),
-          child: Icon(icon, size: 18, color: const Color(0xFF475569)),
+          child: Icon(icon, size: 18, color: AppColors.slate700),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -399,7 +532,7 @@ class _SecurityFeature extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                  color: AppColors.slate800,
                 ),
               ),
               const SizedBox(height: 2),
@@ -407,8 +540,8 @@ class _SecurityFeature extends StatelessWidget {
                 subtitle,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
-                  height: 1.3,
+                  color: AppColors.slate600,
+                  height: 1.35,
                 ),
               ),
             ],
@@ -419,14 +552,14 @@ class _SecurityFeature extends StatelessWidget {
   }
 }
 
-// ─── Modern & Simple Role Selection Bottom Sheet ───────────────────────────────
-class _ModernRoleSelectionSheet extends StatelessWidget {
+// ─── Role Selection Bottom Sheet ─────────────────────────────────────────────
+class _RoleSelectionSheet extends StatelessWidget {
   final String userName;
   final String userEmail;
   final String? userPhoto;
   final void Function(String role) onSelectRole;
 
-  const _ModernRoleSelectionSheet({
+  const _RoleSelectionSheet({
     required this.userName,
     required this.userEmail,
     this.userPhoto,
@@ -438,140 +571,133 @@ class _ModernRoleSelectionSheet extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      padding: EdgeInsets.fromLTRB(24, 16, 24, MediaQuery.of(context).viewInsets.bottom + 28),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        14,
+        24,
+        MediaQuery.of(context).viewInsets.bottom + 24,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Drag handle
+          // Drag Handle
           Center(
             child: Container(
               width: 36,
               height: 4,
               decoration: BoxDecoration(
-                color: const Color(0xFFCBD5E1),
+                color: AppColors.slate300,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
 
-          // User info header
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 22,
-                backgroundColor: AppColors.lightRed,
-                backgroundImage: userPhoto != null ? NetworkImage(userPhoto!) : null,
-                child: userPhoto == null
-                    ? Text(
-                        userName.isNotEmpty ? userName[0].toUpperCase() : 'U',
+          // User Profile Info
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.slate50,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.borderStrong),
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: AppColors.lightRed,
+                  backgroundImage:
+                      userPhoto != null ? NetworkImage(userPhoto!) : null,
+                  child: userPhoto == null
+                      ? Text(
+                          userName.isNotEmpty ? userName[0].toUpperCase() : 'U',
+                          style: const TextStyle(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 15,
+                          ),
+                        )
+                      : null,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        userName,
                         style: const TextStyle(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.slate900,
                         ),
-                      )
-                    : null,
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      userName,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      userEmail,
-                      style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFECFDF5),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xFFA7F3D0)),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.check_circle, size: 12, color: Color(0xFF059669)),
-                    SizedBox(width: 4),
-                    Text(
-                      'Terhubung',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF059669),
+                      Text(
+                        userEmail,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.slate600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                const Icon(
+                  Icons.check_circle_rounded,
+                  size: 18,
+                  color: AppColors.success,
+                ),
+              ],
+            ),
           ),
+          const SizedBox(height: 22),
 
-          const SizedBox(height: 24),
           const Text(
-            'Pilih Peran Anda',
+            'Lanjutkan Sebagai',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
-              letterSpacing: -0.3,
+              color: AppColors.slate900,
+              letterSpacing: -0.4,
             ),
           ),
           const SizedBox(height: 4),
           const Text(
-            'Tentukan hak akses untuk melanjutkan ke aplikasi SuaraSiswa:',
-            style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+            'Pilih peran Anda untuk mengatur ruang sekolah dan akses layanan:',
+            style: TextStyle(
+              fontSize: 13,
+              color: AppColors.slate600,
+            ),
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 16),
 
-          // ─── OPTION 1: SISWA ────────────────────────────────────────
-          _ModernRoleCard(
-            badgeText: 'Siswa / Murid',
-            badgeColor: const Color(0xFF2563EB),
-            badgeBg: const Color(0xFFEFF6FF),
-            icon: Icons.school_rounded,
-            iconColor: const Color(0xFF2563EB),
-            iconBg: const Color(0xFFDBEAFE),
-            title: 'Daftar sebagai Siswa',
-            description: 'Buat laporan pengaduan, sampaikan aspirasi sekolah, dan pantau status penanganan secara rahasia.',
-            buttonText: 'Daftar sebagai Siswa',
-            isPrimary: true,
+          // Role 1: Siswa
+          _SelectableRoleCard(
+            title: 'Siswa / Peserta Didik',
+            description:
+                'Sampaikan pengaduan, kritik, saran, serta aspirasi sekolah secara aman dan rahasia.',
+            icon: Icons.school_outlined,
+            accentColor: const Color(0xFF2563EB),
+            backgroundColor: const Color(0xFFEFF6FF),
             onTap: () => onSelectRole('student'),
           ),
+          const SizedBox(height: 12),
 
-          const SizedBox(height: 14),
-
-          // ─── OPTION 2: GURU ─────────────────────────────────────────
-          _ModernRoleCard(
-            badgeText: 'Pendidik / Guru BK',
-            badgeColor: AppColors.primary,
-            badgeBg: AppColors.lightRed,
-            icon: Icons.health_and_safety_rounded,
-            iconColor: AppColors.primary,
-            iconBg: AppColors.lightRed,
-            title: 'Daftar sebagai Guru',
-            description: 'Kelola ruang sekolah, tangani laporan masuk dari siswa, dan dampingi peserta didik.',
-            buttonText: 'Daftar sebagai Guru',
-            isPrimary: false,
+          // Role 2: Guru BK
+          _SelectableRoleCard(
+            title: 'Guru BK / Konselor',
+            description:
+                'Buat atau kelola ruang sekolah, verifikasi kelas, dan tangani aspirasi maupun laporan siswa.',
+            icon: Icons.supervisor_account_outlined,
+            accentColor: AppColors.primary,
+            backgroundColor: AppColors.lightRed,
             onTap: () => onSelectRole('counselor'),
           ),
         ],
@@ -580,66 +706,50 @@ class _ModernRoleSelectionSheet extends StatelessWidget {
   }
 }
 
-class _ModernRoleCard extends StatelessWidget {
-  final String badgeText;
-  final Color badgeColor;
-  final Color badgeBg;
-  final IconData icon;
-  final Color iconColor;
-  final Color iconBg;
+class _SelectableRoleCard extends StatelessWidget {
   final String title;
   final String description;
-  final String buttonText;
-  final bool isPrimary;
+  final IconData icon;
+  final Color accentColor;
+  final Color backgroundColor;
   final VoidCallback onTap;
 
-  const _ModernRoleCard({
-    required this.badgeText,
-    required this.badgeColor,
-    required this.badgeBg,
-    required this.icon,
-    required this.iconColor,
-    required this.iconBg,
+  const _SelectableRoleCard({
     required this.title,
     required this.description,
-    required this.buttonText,
-    this.isPrimary = false,
+    required this.icon,
+    required this.accentColor,
+    required this.backgroundColor,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isPrimary ? const Color(0xFFBFDBFE) : const Color(0xFFE2E8F0),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isPrimary ? const Color(0xFF2563EB).withOpacity(0.06) : Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppColors.borderStrong),
           ),
-        ],
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
-                  color: iconBg,
+                  color: backgroundColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, color: iconColor, size: 22),
+                child: Icon(icon, color: accentColor, size: 22),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -647,63 +757,35 @@ class _ModernRoleCard extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.slate900,
                       ),
                     ),
-                    const SizedBox(height: 2),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: badgeBg,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        badgeText,
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          color: badgeColor,
-                        ),
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.slate600,
+                        height: 1.4,
                       ),
                     ),
                   ],
                 ),
               ),
+              const SizedBox(width: 8),
+              const Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 14,
+                  color: AppColors.slate400,
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 10),
-          Text(
-            description,
-            style: const TextStyle(fontSize: 12.5, color: AppColors.textSecondary, height: 1.4),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: onTap,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isPrimary ? const Color(0xFF2563EB) : AppColors.primary,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    buttonText,
-                    style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
-                  ),
-                  const SizedBox(width: 6),
-                  const Icon(Icons.arrow_forward_rounded, size: 16),
-                ],
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

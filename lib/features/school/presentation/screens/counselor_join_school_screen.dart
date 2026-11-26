@@ -86,17 +86,17 @@ class _CounselorJoinSchoolScreenState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: AppColors.purpleLight,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.purple.withOpacity(0.3)),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.purpleBorder),
                   ),
                   child: const Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.vpn_key_outlined, color: AppColors.purple, size: 22),
-                      SizedBox(width: 12),
+                      Icon(Icons.vpn_key_outlined, color: AppColors.purple, size: 20),
+                      SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           'Untuk menjaga kerahasiaan siswa, akses Guru BK memerlukan Kode Undangan Resmi (Invitation Code) yang digenerate oleh Guru BK Pemilik Sekolah.',

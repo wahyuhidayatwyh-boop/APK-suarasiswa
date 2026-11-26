@@ -436,11 +436,9 @@ class _ReportChatScreenState extends ConsumerState<ReportChatScreen> {
                                   : Border.all(color: const Color(0xFFE2E8F0)),
                               boxShadow: [
                                 BoxShadow(
-                                  color: isMe
-                                      ? const Color(0xFFDC2626).withOpacity(0.18)
-                                      : Colors.black.withOpacity(0.04),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 3),
+                                  color: Colors.black.withOpacity(0.04),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 1),
                                 ),
                               ],
                             ),

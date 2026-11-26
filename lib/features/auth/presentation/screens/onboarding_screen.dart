@@ -1,9 +1,8 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../shared/widgets/app_button.dart';
 import '../auth_controller.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -21,24 +20,24 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
 
-  final List<Map<String, dynamic>> _slides = [
+  final List<Map<String, String>> _slides = const [
     {
-      'title': 'Bullying Bukan Bercanda',
-      'desc': 'Perlakuan yang menyakiti bukan hal sepele. Setiap kata dan tindakan memiliki dampak nyata bagi sesama.',
+      'title': 'Perundungan Bukan Candaan',
+      'desc':
+          'Tindakan yang menyakiti sesama meninggalkan bekas nyata. Mari bangun kebiasaan saling menjaga di lingkungan sekolah.',
       'image': 'assets/images/onb1.png',
-      'badge': 'Peduli Sesama',
     },
     {
-      'title': 'Kamu Tidak Sendiri',
-      'desc': 'Ceritakan apa yang terjadi secara aman. Guru BK siap mendengarkan, melindungi, dan mendampingi.',
+      'title': 'Kamu Tidak Pernah Sendiri',
+      'desc':
+          'Ceritakan apa yang kamu alami tanpa rasa takut. Guru BK siap mendengarkan, melindungi, dan mendampingi langkahmu.',
       'image': 'assets/images/onb2.png',
-      'badge': 'Privasi Terjaga',
     },
     {
-      'title': 'Suaramu Sangat Berarti',
-      'desc': 'Laporkan perundungan dan sampaikan aspirasimu demi sekolah yang aman dan ramah bagi semua.',
+      'title': 'Setiap Suara Sangat Berarti',
+      'desc':
+          'Keberanianmu melapor dan bersuara adalah awal terciptanya sekolah yang aman, inklusif, dan ramah bagi semua.',
       'image': 'assets/images/onb3.png',
-      'badge': 'Berani Bicara',
     },
   ];
 
@@ -51,8 +50,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
         statusBarIconBrightness: Brightness.light,
       ),
     );
-    _fadeController = AnimationController(vsync: this, duration: const Duration(milliseconds: 350));
-    _fadeAnimation = CurvedAnimation(parent: _fadeController, curve: Curves.easeIn);
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeIn,
+    );
     _fadeController.forward();
   }
 
@@ -83,17 +88,28 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
         title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(6),
-              child: Image.asset('assets/images/logo.png', width: 26, height: 26, fit: BoxFit.contain),
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 24,
+                height: 24,
+                fit: BoxFit.contain,
+              ),
             ),
             const SizedBox(width: 8),
             const Text(
               'SuaraSiswa',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+              ),
             ),
           ],
         ),
@@ -101,21 +117,28 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           if (_currentPage < _slides.length - 1)
             TextButton(
               onPressed: _completeOnboarding,
-              child: const Text('Lewati', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14)),
+              child: const Text(
+                'Lewati',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
             ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 8),
         ],
       ),
       body: Stack(
         children: [
-          // Full screen photos
+          // Background Imagery
           PageView.builder(
             controller: _pageController,
             itemCount: _slides.length,
             onPageChanged: _onPageChanged,
             itemBuilder: (context, index) {
               return Image.asset(
-                _slides[index]['image'] as String,
+                _slides[index]['image']!,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
@@ -123,36 +146,49 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             },
           ),
 
-          // Top gradient
-          Positioned.fill(
+          // Top Subtle Gradient Scrim
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 120,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
-                  end: const Alignment(0, -0.2),
-                  colors: [Colors.black.withOpacity(0.6), Colors.transparent],
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.65),
+                    Colors.transparent,
+                  ],
                 ),
               ),
             ),
           ),
 
-          // Bottom gradient
+          // Bottom Scrim Gradient for Readability
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
-                  end: Alignment.center,
-                  colors: [Colors.black.withOpacity(0.97), Colors.black.withOpacity(0.65), Colors.transparent],
-                  stops: const [0.0, 0.4, 1.0],
+                  end: const Alignment(0, -0.2),
+                  colors: [
+                    Colors.black.withOpacity(0.92),
+                    Colors.black.withOpacity(0.70),
+                    Colors.transparent,
+                  ],
+                  stops: const [0.0, 0.45, 1.0],
                 ),
               ),
             ),
           ),
 
-          // Bottom content
+          // Bottom Narrative Content
           Positioned(
-            left: 0, right: 0, bottom: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             child: FadeTransition(
               opacity: _fadeAnimation,
               child: SafeArea(
@@ -163,57 +199,46 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Badge
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.verified_user_rounded, size: 12, color: Colors.white),
-                            const SizedBox(width: 5),
-                            Text(
-                              _slides[_currentPage]['badge'] as String,
-                              style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Title
+                      // Slide Title
                       Text(
-                        _slides[_currentPage]['title'] as String,
+                        _slides[_currentPage]['title']!,
                         style: const TextStyle(
-                          color: Colors.white, fontSize: 26, fontWeight: FontWeight.w800,
-                          height: 1.2, letterSpacing: -0.5,
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w800,
+                          height: 1.25,
+                          letterSpacing: -0.5,
                         ),
                       ),
                       const SizedBox(height: 10),
 
-                      // Desc
+                      // Slide Description
                       Text(
-                        _slides[_currentPage]['desc'] as String,
-                        style: TextStyle(color: Colors.white.withOpacity(0.78), fontSize: 14, height: 1.5),
+                        _slides[_currentPage]['desc']!,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.82),
+                          fontSize: 14,
+                          height: 1.5,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 28),
 
-                      // Dots + page counter row
+                      // Indicators & Counter Row
                       Row(
                         children: [
                           ...List.generate(_slides.length, (index) {
                             final isActive = index == _currentPage;
                             return AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
+                              duration: const Duration(milliseconds: 250),
                               curve: Curves.easeInOut,
                               margin: const EdgeInsets.only(right: 6),
-                              width: isActive ? 28 : 8,
-                              height: 8,
+                              width: isActive ? 24 : 7,
+                              height: 7,
                               decoration: BoxDecoration(
-                                color: isActive ? AppColors.primary : Colors.white.withOpacity(0.3),
+                                color: isActive
+                                    ? AppColors.primary
+                                    : Colors.white.withOpacity(0.35),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             );
@@ -221,36 +246,62 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                           const Spacer(),
                           Text(
                             '${_currentPage + 1} / ${_slides.length}',
-                            style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.55),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 24),
 
-                      // CTA button
-                      AppButton(
-                        text: _currentPage == _slides.length - 1 ? 'Mulai Sekarang' : 'Lanjut',
-                        onPressed: () {
-                          if (_currentPage < _slides.length - 1) {
-                            _pageController.nextPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeInOut,
-                            );
-                          } else {
-                            _completeOnboarding();
-                          }
-                        },
+                      // Primary Navigation Action
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_currentPage < _slides.length - 1) {
+                              _pageController.nextPage(
+                                duration: const Duration(milliseconds: 350),
+                                curve: Curves.easeInOutCubic,
+                              );
+                            } else {
+                              _completeOnboarding();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            _currentPage == _slides.length - 1
+                                ? 'Mulai Sekarang'
+                                : 'Lanjut',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 12),
 
-                      // Sudah punya akun
+                      // Secondary Shortcut
                       Center(
                         child: TextButton(
                           onPressed: _completeOnboarding,
-                          child: Text(
-                            'Sudah punya akun? Masuk di sini',
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white.withOpacity(0.75),
+                          ),
+                          child: const Text(
+                            'Sudah memiliki akun? Masuk langsung',
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.7),
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                             ),

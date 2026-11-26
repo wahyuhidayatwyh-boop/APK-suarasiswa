@@ -373,51 +373,6 @@ class _CreateReportScreenState extends ConsumerState<CreateReportScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ─── Privacy Notice Banner ───────────────────────────────────
-                ModernCard(
-                  variant: ModernCardVariant.flat,
-                  borderRadius: 18,
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFECFDF5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(Icons.security_rounded,
-                            color: Color(0xFF059669), size: 20),
-                      ),
-                      const SizedBox(width: 12),
-                      const Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Kerahasiaan Dijamin Penuh',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xFF0F172A),
-                              ),
-                            ),
-                            SizedBox(height: 2),
-                            Text(
-                              'Laporan hanya dapat dilihat oleh Guru BK berwenang. Kamu dapat bercerita tanpa rasa khawatir.',
-                              style: TextStyle(
-                                fontSize: 11.5,
-                                color: Color(0xFF475569),
-                                height: 1.4,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 const SizedBox(height: 18),
 
                 // ─── 1. Report Type Selector ─────────────────────────────────
@@ -446,22 +401,19 @@ class _CreateReportScreenState extends ConsumerState<CreateReportScreen> {
                           },
                           borderRadius: BorderRadius.circular(14),
                           child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 180),
+                            duration: const Duration(milliseconds: 150),
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? AppColors.primary
                                   : Colors.white,
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: isSelected
                                     ? AppColors.primary
-                                    : const Color(0xFFE2E8F0),
+                                    : AppColors.borderStrong,
                                 width: 1.2,
                               ),
-                              boxShadow: isSelected
-                                  ? AppColors.redCardShadow
-                                  : AppColors.elevation1,
                             ),
                             child: Text(
                               type.label.split(' ').first,
@@ -913,14 +865,14 @@ class _CreateReportScreenState extends ConsumerState<CreateReportScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // ─── 4. Submit Button (Modern 3D Pill Button) ─────────────────
+                // ─── 4. Submit Button ─────────────────────────────────────────
                 AppButton(
                   text: 'Kirim Laporan ke Guru BK',
                   icon: const Icon(Icons.send_rounded,
                       size: 18, color: Colors.white),
                   isLoading: _isSubmitting,
-                  height: 52,
-                  borderRadius: 26,
+                  height: 48,
+                  borderRadius: 12,
                   onPressed: _handleSubmit,
                 ),
 

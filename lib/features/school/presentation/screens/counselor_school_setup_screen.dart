@@ -18,41 +18,41 @@ class CounselorSchoolSetupScreen extends ConsumerWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Column(
             children: [
               const Spacer(),
-              // Success Icon Badge
+              // Success Mark
               Container(
-                width: 80,
-                height: 80,
+                width: 72,
+                height: 72,
                 decoration: const BoxDecoration(
                   color: AppColors.successLight,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.check_circle_rounded,
-                  size: 48,
+                  size: 40,
                   color: AppColors.success,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
               const Text(
-                'Ruang Sekolah Berhasil Dibuat!',
+                'Ruang Sekolah Siap Digunakan',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
+                  color: AppColors.slate900,
                   letterSpacing: -0.4,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 school?.name ?? 'Sekolah Anda',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.w600,
                   color: AppColors.primary,
                 ),
@@ -64,19 +64,19 @@ class CounselorSchoolSetupScreen extends ConsumerWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.border, width: 1.5),
+                  color: AppColors.slate50,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.borderStrong),
                 ),
                 child: Column(
                   children: [
                     const Text(
-                      'KODE SEKOLAH ANDA',
+                      'KODE BERGABUNG SEKOLAH',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textSecondary,
-                        letterSpacing: 1.2,
+                        color: AppColors.slate500,
+                        letterSpacing: 0.8,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -86,37 +86,40 @@ class CounselorSchoolSetupScreen extends ConsumerWidget {
                         Text(
                           school?.schoolCode ?? 'SMK-TN82',
                           style: const TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w900,
-                            color: AppColors.textPrimary,
-                            letterSpacing: 2.0,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.slate900,
+                            letterSpacing: 1.5,
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 10),
                         IconButton(
                           onPressed: () {
                             if (school?.schoolCode != null) {
-                              Clipboard.setData(ClipboardData(text: school!.schoolCode));
+                              Clipboard.setData(
+                                  ClipboardData(text: school!.schoolCode));
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Kode sekolah berhasil disalin!'),
+                                  content:
+                                      Text('Kode sekolah berhasil disalin!'),
                                   duration: Duration(seconds: 2),
                                 ),
                               );
                             }
                           },
-                          icon: const Icon(Icons.copy_rounded, color: AppColors.primary),
+                          icon: const Icon(Icons.copy_rounded,
+                              size: 20, color: AppColors.primary),
                           tooltip: 'Salin Kode Sekolah',
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     const Text(
-                      'Bagikan kode ini kepada siswa saat mereka hendak mendaftar ke sekolah Anda.',
+                      'Bagikan kode ini kepada siswa saat mendaftar akun agar terhubung ke ruang sekolah Anda.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: AppColors.slate600,
                         height: 1.4,
                       ),
                     ),
@@ -127,36 +130,46 @@ class CounselorSchoolSetupScreen extends ConsumerWidget {
 
               // Next Steps Checklist
               Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.border),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppColors.borderStrong),
                 ),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Langkah Selanjutnya:',
+                    Text(
+                      'Rekomendasi Langkah Awal:',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color: AppColors.slate900,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    _buildStepRow(1, 'Buat kelas pertama Anda (misal: X RPL 1)'),
-                    const SizedBox(height: 8),
-                    _buildStepRow(2, 'Bagikan kode kelas ke siswa'),
-                    const SizedBox(height: 8),
-                    _buildStepRow(3, 'Undang rekan Guru BK lain jika ada'),
+                    SizedBox(height: 10),
+                    _StepItem(
+                      icon: Icons.meeting_room_outlined,
+                      text: 'Buat kelas pertama Anda (misal: X RPL 1)',
+                    ),
+                    SizedBox(height: 8),
+                    _StepItem(
+                      icon: Icons.qr_code_rounded,
+                      text: 'Bagikan kode sekolah atau kelas ke siswa',
+                    ),
+                    SizedBox(height: 8),
+                    _StepItem(
+                      icon: Icons.group_add_outlined,
+                      text: 'Undang rekan Guru BK lain bila bertugas bersama',
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 24),
 
               AppButton(
-                text: 'Mulai Atur Sekolah & Kelas',
+                text: 'Masuk ke Dashboard Guru BK',
                 onPressed: () {
                   context.go('/counselor');
                 },
@@ -168,33 +181,24 @@ class CounselorSchoolSetupScreen extends ConsumerWidget {
       ),
     );
   }
+}
 
-  Widget _buildStepRow(int number, String text) {
+class _StepItem extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const _StepItem({required this.icon, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          width: 22,
-          height: 22,
-          decoration: const BoxDecoration(
-            color: AppColors.lightRed,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Text(
-              '$number',
-              style: const TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-        ),
+        Icon(icon, size: 16, color: AppColors.slate500),
         const SizedBox(width: 10),
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            style: const TextStyle(fontSize: 12, color: AppColors.slate700),
           ),
         ),
       ],

@@ -57,7 +57,8 @@ class _CounselorDashboardScreenState
     final school = authState.currentSchool;
     final counselor = authState.counselorProfile;
 
-    final counselorName = counselor?.name ?? authState.user?.name ?? 'Guru BK';
+    final counselorName =
+        counselor?.name ?? authState.user?.name ?? 'Guru BK';
     final schoolName = school?.name ?? 'Sekolah';
     final schoolCode = school?.schoolCode ?? '-';
 
@@ -116,16 +117,16 @@ class _CounselorDashboardScreenState
                           children: [
                             InkWell(
                               onTap: () => context.push('/notifications'),
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(16),
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                      color: const Color(0xFFE2E8F0),
-                                      width: 1.2),
-                                  boxShadow: AppColors.elevation1,
+                                    color: AppColors.borderStrong,
+                                    width: 1,
+                                  ),
                                 ),
                                 child: const Icon(
                                   Icons.notifications_none_rounded,
@@ -136,27 +137,14 @@ class _CounselorDashboardScreenState
                             ),
                             if (unreadCount > 0)
                               Positioned(
-                                top: 2,
-                                right: 2,
+                                top: 4,
+                                right: 4,
                                 child: Container(
-                                  padding: const EdgeInsets.all(3),
+                                  width: 8,
+                                  height: 8,
                                   decoration: const BoxDecoration(
                                     color: AppColors.primary,
                                     shape: BoxShape.circle,
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 16,
-                                    minHeight: 16,
-                                  ),
-                                  child: Text(
-                                    unreadCount > 9 ? '9+' : '$unreadCount',
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.bold,
-                                      height: 1,
-                                    ),
                                   ),
                                 ),
                               ),
@@ -178,7 +166,7 @@ class _CounselorDashboardScreenState
                 ),
                 const SizedBox(height: 20),
 
-                // ─── 4. Quick Actions Management ─────────────────────────────
+                // ─── 3. Quick Actions Management ─────────────────────────────
                 SectionHeader(
                   title: 'Kelola Sekolah & Siswa',
                   padding: EdgeInsets.zero,
@@ -216,7 +204,7 @@ class _CounselorDashboardScreenState
                 ),
                 const SizedBox(height: 22),
 
-                // ─── 5. Metric Stat Cards Grid ───────────────────────────────
+                // ─── 4. Metric Stat Cards Grid ───────────────────────────────
                 SectionHeader(
                   title: 'Statistik Laporan Masuk',
                   subtitle: 'Ketuk kartu untuk melihat daftar laporan',
@@ -248,12 +236,12 @@ class _CounselorDashboardScreenState
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: 1.22,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 1.25,
                       children: [
                         StatCard(
-                          title: 'Semua',
+                          title: 'Semua Laporan',
                           value: '$total',
                           icon: Icons.assignment_outlined,
                           iconColor: AppColors.slate900,
@@ -263,7 +251,7 @@ class _CounselorDashboardScreenState
                         StatCard(
                           title: 'Ditinjau',
                           value: '$underReview',
-                          icon: Icons.visibility_rounded,
+                          icon: Icons.visibility_outlined,
                           iconColor: const Color(0xFFD97706),
                           onTap: () => context
                               .push('/counselor/reports?status=UNDER_REVIEW'),
@@ -279,7 +267,7 @@ class _CounselorDashboardScreenState
                         StatCard(
                           title: 'Selesai',
                           value: '$resolved',
-                          icon: Icons.check_circle_rounded,
+                          icon: Icons.check_circle_outline_rounded,
                           iconColor: const Color(0xFF059669),
                           onTap: () => context
                               .push('/counselor/reports?status=RESOLVED'),
@@ -290,7 +278,7 @@ class _CounselorDashboardScreenState
                 ),
                 const SizedBox(height: 24),
 
-                // ─── 6. Laporan Masuk Terbaru ────────────────────────────────
+                // ─── 5. Laporan Masuk Terbaru ────────────────────────────────
                 SectionHeader(
                   title: 'Laporan Masuk Terbaru',
                   subtitle: 'Pengaduan siswa yang membutuhkan perhatian',
@@ -311,14 +299,14 @@ class _CounselorDashboardScreenState
                           child: Column(
                             children: [
                               Container(
-                                width: 48,
-                                height: 48,
+                                width: 44,
+                                height: 44,
                                 decoration: const BoxDecoration(
                                   color: AppColors.lightRed,
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(Icons.inbox_outlined,
-                                    color: AppColors.primary, size: 24),
+                                    color: AppColors.primary, size: 22),
                               ),
                               const SizedBox(height: 12),
                               const Text(
@@ -346,7 +334,8 @@ class _CounselorDashboardScreenState
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: recentReports.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 10),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 10),
                       itemBuilder: (context, index) {
                         final item = recentReports[index];
                         final isBullying = item.type == ReportType.bullying ||
@@ -358,41 +347,43 @@ class _CounselorDashboardScreenState
                                 : const Color(0xFF2563EB);
 
                         return ModernCard(
-                          borderRadius: 18,
+                          borderRadius: 14,
                           padding: const EdgeInsets.all(14),
                           onTap: () =>
                               context.push('/counselor/reports/${item.id}'),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Thumbnail or category icon
                               if (item.attachmentUrls.isNotEmpty)
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
                                     item.attachmentUrls.first,
-                                    width: 52,
-                                    height: 52,
+                                    width: 48,
+                                    height: 48,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) => Container(
-                                      width: 52,
-                                      height: 52,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Container(
+                                      width: 48,
+                                      height: 48,
                                       decoration: BoxDecoration(
-                                        color: accentColor.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(12),
+                                        color: accentColor.withOpacity(0.08),
+                                        borderRadius:
+                                            BorderRadius.circular(10),
                                       ),
                                       child: Icon(Icons.assignment_outlined,
-                                          color: accentColor, size: 22),
+                                          color: accentColor, size: 20),
                                     ),
                                   ),
                                 )
                               else
                                 Container(
-                                  width: 48,
-                                  height: 48,
+                                  width: 44,
+                                  height: 44,
                                   decoration: BoxDecoration(
-                                    color: accentColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
+                                    color: accentColor.withOpacity(0.08),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Icon(
                                     isBullying
@@ -401,7 +392,7 @@ class _CounselorDashboardScreenState
                                             ? Icons.volunteer_activism_rounded
                                             : Icons.assignment_outlined,
                                     color: accentColor,
-                                    size: 22,
+                                    size: 20,
                                   ),
                                 ),
                               const SizedBox(width: 12),
@@ -453,7 +444,10 @@ class _CounselorDashboardScreenState
                                           ),
                                         ),
                                         const SizedBox(width: 6),
-                                        const Text('•', style: TextStyle(color: AppColors.slate300, fontSize: 10)),
+                                        const Text('•',
+                                            style: TextStyle(
+                                                color: AppColors.slate300,
+                                                fontSize: 10)),
                                         const SizedBox(width: 6),
                                         Expanded(
                                           child: Text(
@@ -467,7 +461,8 @@ class _CounselorDashboardScreenState
                                           ),
                                         ),
                                         Text(
-                                          AppDateFormatter.formatShort(item.createdAt),
+                                          AppDateFormatter.formatShort(
+                                              item.createdAt),
                                           style: const TextStyle(
                                             fontSize: 10,
                                             color: AppColors.slate400,
@@ -485,8 +480,6 @@ class _CounselorDashboardScreenState
                     );
                   },
                 ),
-
-                // Spacing to keep content cleanly above the floating bottom navigation bar
                 const SizedBox(height: 96),
               ],
             ),
@@ -496,7 +489,7 @@ class _CounselorDashboardScreenState
     );
   }
 
-  // ─── 3D Crimson Counselor & School Card ─────────────────────────────────────
+  // ─── Refined Counselor Portal Card ──────────────────────────────────────────
   Widget _buildCrimsonCounselorCard({
     required String counselorName,
     required String schoolName,
@@ -506,263 +499,193 @@ class _CounselorDashboardScreenState
   }) {
     return ModernCard(
       variant: ModernCardVariant.crimson,
-      borderRadius: 22,
-      padding: const EdgeInsets.all(20),
-      child: Stack(
+      borderRadius: 18,
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Positioned(
-            right: -30,
-            bottom: -30,
-            child: Container(
-              width: 160,
-              height: 160,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.06),
-              ),
-            ),
-          ),
-          Positioned(
-            right: 40,
-            top: -40,
-            child: Container(
-              width: 110,
-              height: 110,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.04),
-              ),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.18),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                                color: Colors.white.withOpacity(0.3), width: 1),
-                          ),
-                          child: const Icon(
-                            Icons.nfc_rounded,
-                            size: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const Flexible(
-                          child: Text(
-                            'KARTU AKSES GURU BK',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.8,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.verified_rounded,
-                            size: 11, color: Colors.white),
-                        SizedBox(width: 4),
-                        Text(
-                          'TERVERIFIKASI',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              const Text(
+                'PORTAL GURU BK & KONSELOR',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.6,
+                ),
               ),
-              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text(
+                  'TERDAFTAR',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
 
-              // School Join Code (Highlighted like Card Number)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // School Join Code
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  const Text(
+                    'KODE BERGABUNG SEKOLAH',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 9.5,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'KODE BERGABUNG SEKOLAH',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 9.5,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.8,
+                      Text(
+                        isCodeVisible
+                            ? schoolCode
+                            : '•••• •••• ${schoolCode.length >= 3 ? schoolCode.substring(schoolCode.length - 3) : schoolCode}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.2,
                         ),
                       ),
-                      const SizedBox(height: 3),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: onToggleCodeVisibility,
+                        borderRadius: BorderRadius.circular(14),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Icon(
                             isCodeVisible
-                                ? schoolCode
-                                : '•••• •••• ${schoolCode.length >= 3 ? schoolCode.substring(schoolCode.length - 3) : schoolCode}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 1.5,
-                            ),
+                                ? Icons.visibility_off_rounded
+                                : Icons.visibility_rounded,
+                            size: 16,
+                            color: Colors.white70,
                           ),
-                          const SizedBox(width: 8),
-                          InkWell(
-                            onTap: onToggleCodeVisibility,
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                isCodeVisible
-                                    ? Icons.visibility_off_rounded
-                                    : Icons.visibility_rounded,
-                                size: 15,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
-                  InkWell(
-                    onTap: () {
-                      Clipboard.setData(ClipboardData(text: schoolCode));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Kode sekolah berhasil disalin!'),
-                          duration: Duration(seconds: 1),
-                        ),
-                      );
-                    },
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: Colors.white.withOpacity(0.3), width: 1),
-                      ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.copy_rounded,
-                              size: 13, color: Colors.white),
-                          SizedBox(width: 4),
-                          Text(
-                            'Salin',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                 ],
               ),
-              const SizedBox(height: 18),
+              InkWell(
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: schoolCode));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Kode sekolah berhasil disalin!'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.copy_rounded, size: 12, color: Colors.white),
+                      SizedBox(width: 4),
+                      Text(
+                        'Salin',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
 
-              // Counselor & School
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'NAMA KONSELOR',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 9.5,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.8,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          counselorName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
+          // Counselor and School Name
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'KONSELOR',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Flexible(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const Text(
-                          'SEKOLAH',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 9.5,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.8,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          schoolName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 2),
+                    Text(
+                      counselorName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Flexible(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'SEKOLAH',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      schoolName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -778,26 +701,19 @@ class _CounselorDashboardScreenState
     required VoidCallback onTap,
   }) {
     return ModernCard(
-      borderRadius: 18,
+      borderRadius: 14,
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
       onTap: onTap,
       child: Column(
         children: [
           Container(
-            width: 42,
-            height: 42,
+            width: 38,
+            height: 38,
             decoration: BoxDecoration(
-              color: accentColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: [
-                BoxShadow(
-                  color: accentColor.withOpacity(0.18),
-                  blurRadius: 10,
-                  offset: const Offset(0, 3),
-                ),
-              ],
+              color: accentColor.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: accentColor, size: 22),
+            child: Icon(icon, color: accentColor, size: 20),
           ),
           const SizedBox(height: 8),
           Text(

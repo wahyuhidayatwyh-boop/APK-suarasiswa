@@ -106,17 +106,17 @@ class _CounselorInvitesScreenState extends ConsumerState<CounselorInvitesScreen>
               children: [
                 // Info Card
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: AppColors.purpleLight,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.purple.withOpacity(0.3)),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.purpleBorder),
                   ),
                   child: const Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.shield_outlined, color: AppColors.purple, size: 22),
-                      SizedBox(width: 12),
+                      Icon(Icons.shield_outlined, color: AppColors.purple, size: 20),
+                      SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           'Kode undangan ini khusus untuk rekan Guru BK yang bertugas di sekolah Anda. Hanya Guru BK yang memiliki kode ini yang dapat mengakses laporan sekolah.',
@@ -159,7 +159,7 @@ class _CounselorInvitesScreenState extends ConsumerState<CounselorInvitesScreen>
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(color: AppColors.border),
                     ),
                     child: const Text(
@@ -176,7 +176,7 @@ class _CounselorInvitesScreenState extends ConsumerState<CounselorInvitesScreen>
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(14),
                         border: Border.all(color: AppColors.border),
                       ),
                       child: Row(
@@ -232,7 +232,7 @@ class _CounselorInvitesScreenState extends ConsumerState<CounselorInvitesScreen>
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(color: AppColors.border),
                     ),
                     child: const Text(
@@ -253,7 +253,7 @@ class _CounselorInvitesScreenState extends ConsumerState<CounselorInvitesScreen>
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(14),
                         border: Border.all(color: AppColors.border),
                       ),
                       child: Row(

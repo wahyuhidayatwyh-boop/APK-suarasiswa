@@ -227,34 +227,6 @@ class _ReportListScreenState extends ConsumerState<ReportListScreen> {
                           );
                         },
                       ),
-                    const SizedBox(height: 18),
-
-                    // ─── Security Notice Banner ──────────────────────────
-                    ModernCard(
-                      variant: ModernCardVariant.flat,
-                      borderRadius: 16,
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.lock_outline_rounded,
-                              size: 15, color: Color(0xFF059669)),
-                          SizedBox(width: 8),
-                          Flexible(
-                            child: Text(
-                              'Laporan hanya dapat diakses olehmu dan Guru BK.',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 11.5,
-                                color: AppColors.slate600,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
 
                     // Spacing to keep content cleanly above the floating bottom navigation bar
                     const SizedBox(height: 96),
@@ -277,23 +249,22 @@ class _ReportListScreenState extends ConsumerState<ReportListScreen> {
         });
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.slate900 : Colors.white,
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AppColors.slate900 : const Color(0xFFE2E8F0),
-            width: 1.2,
+            color: isSelected ? AppColors.slate900 : AppColors.borderStrong,
+            width: 1,
           ),
-          boxShadow: isSelected ? AppColors.elevation2 : AppColors.elevation1,
         ),
         child: Text(
           label,
           style: TextStyle(
             color: isSelected ? Colors.white : AppColors.slate700,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            fontSize: 12.5,
+            fontSize: 12,
           ),
         ),
       ),

@@ -22,7 +22,7 @@ class AppButton extends StatelessWidget {
     this.variant = AppButtonVariant.primary,
     this.width,
     this.height = 46,
-    this.borderRadius = 23,
+    this.borderRadius = 12,
   });
 
   @override
@@ -79,10 +79,8 @@ class AppButton extends StatelessWidget {
         container = AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           decoration: BoxDecoration(
-            gradient: isEnabled ? AppColors.primaryGradient : null,
-            color: isEnabled ? null : AppColors.slate200,
+            color: isEnabled ? AppColors.primary : AppColors.slate200,
             borderRadius: br,
-            boxShadow: isEnabled ? AppColors.redCardShadow : null,
           ),
           child: Material(
             color: Colors.transparent,
@@ -94,7 +92,7 @@ class AppButton extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
-                    fontSize: 15,
+                    fontSize: 14.5,
                   ),
                   child: buttonChild,
                 ),
@@ -110,7 +108,9 @@ class AppButton extends StatelessWidget {
             color: AppColors.lightRed,
             borderRadius: br,
             border: Border.all(
-                color: AppColors.redBorder.withOpacity(0.6), width: 1),
+              color: AppColors.redBorder,
+              width: 1,
+            ),
           ),
           child: Material(
             color: Colors.transparent,
@@ -122,7 +122,7 @@ class AppButton extends StatelessWidget {
                   style: const TextStyle(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w700,
-                    fontSize: 15,
+                    fontSize: 14.5,
                   ),
                   child: buttonChild,
                 ),
@@ -137,8 +137,7 @@ class AppButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: br,
-            border: Border.all(color: const Color(0xFFE2E8F0), width: 1.4),
-            boxShadow: AppColors.elevation1,
+            border: Border.all(color: AppColors.borderStrong, width: 1.2),
           ),
           child: Material(
             color: Colors.transparent,
@@ -150,7 +149,7 @@ class AppButton extends StatelessWidget {
                   style: const TextStyle(
                     color: AppColors.slate800,
                     fontWeight: FontWeight.w700,
-                    fontSize: 15,
+                    fontSize: 14.5,
                   ),
                   child: buttonChild,
                 ),
@@ -165,13 +164,6 @@ class AppButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.darkRed,
             borderRadius: br,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.darkRed.withOpacity(0.3),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
           ),
           child: Material(
             color: Colors.transparent,
@@ -183,7 +175,7 @@ class AppButton extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
-                    fontSize: 15,
+                    fontSize: 14.5,
                   ),
                   child: buttonChild,
                 ),
@@ -196,10 +188,8 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.dark:
         container = Container(
           decoration: BoxDecoration(
-            gradient: AppColors.darkCardGradient,
+            color: AppColors.slate900,
             borderRadius: br,
-            boxShadow: AppColors.darkCardShadow,
-            border: Border.all(color: AppColors.darkBorder, width: 1),
           ),
           child: Material(
             color: Colors.transparent,
@@ -211,7 +201,7 @@ class AppButton extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
-                    fontSize: 15,
+                    fontSize: 14.5,
                   ),
                   child: buttonChild,
                 ),

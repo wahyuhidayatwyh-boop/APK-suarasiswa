@@ -105,30 +105,6 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // Privacy Banner
-                ModernCard(
-                  variant: ModernCardVariant.flat,
-                  borderRadius: 16,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.lock_rounded, size: 16, color: Color(0xFF059669)),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'Percakapan bersifat rahasia dan aman, dilindungi kode etik bimbingan konseling.',
-                          style: TextStyle(
-                            fontSize: 11.5,
-                            color: AppColors.slate600,
-                            height: 1.35,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-
                 // Conversations List
                 FutureBuilder(
                   future: _reportsFuture,
@@ -270,19 +246,8 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                               ),
                               const SizedBox(width: 8),
 
-                              // Status Badge & Arrow
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  AppBadge.status(item.status),
-                                  const SizedBox(height: 6),
-                                  const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 12,
-                                    color: AppColors.slate400,
-                                  ),
-                                ],
-                              ),
+                              // Status Badge
+                              AppBadge.status(item.status),
                             ],
                           ),
                         );

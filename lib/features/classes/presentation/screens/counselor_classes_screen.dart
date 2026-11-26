@@ -46,7 +46,7 @@ class _CounselorClassesScreenState extends ConsumerState<CounselorClassesScreen>
         return StatefulBuilder(
           builder: (ctx, setDialogState) {
             return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               title: const Text(
                 'Tambah Kelas Baru',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
@@ -157,7 +157,7 @@ class _CounselorClassesScreenState extends ConsumerState<CounselorClassesScreen>
     showDialog(
       context: context,
       builder: (dlgCtx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Row(
           children: [
             Icon(Icons.person_remove_rounded, color: AppColors.error, size: 24),
@@ -208,7 +208,7 @@ class _CounselorClassesScreenState extends ConsumerState<CounselorClassesScreen>
     showDialog(
       context: context,
       builder: (dlgCtx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Row(
           children: [
             Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 24),
@@ -256,7 +256,7 @@ class _CounselorClassesScreenState extends ConsumerState<CounselorClassesScreen>
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
         return StatefulBuilder(
@@ -518,6 +518,8 @@ class _CounselorClassesScreenState extends ConsumerState<CounselorClassesScreen>
                               child: const Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  Icon(Icons.people_outline_rounded, size: 13, color: AppColors.primary),
+                                  SizedBox(width: 4),
                                   Text(
                                     'Siswa',
                                     style: TextStyle(
@@ -526,8 +528,6 @@ class _CounselorClassesScreenState extends ConsumerState<CounselorClassesScreen>
                                       color: AppColors.primary,
                                     ),
                                   ),
-                                  SizedBox(width: 2),
-                                  Icon(Icons.arrow_forward_ios_rounded, size: 9, color: AppColors.primary),
                                 ],
                               ),
                             ),

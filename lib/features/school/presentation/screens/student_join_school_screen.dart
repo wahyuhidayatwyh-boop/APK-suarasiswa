@@ -76,28 +76,28 @@ class _StudentJoinSchoolScreenState
       barrierDismissible: false,
       builder: (ctx) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 64,
-                height: 64,
+                width: 56,
+                height: 56,
                 decoration: const BoxDecoration(
                   color: AppColors.successLight,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.check_rounded,
-                  size: 38,
+                  size: 32,
                   color: AppColors.success,
                 ),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 16),
               const Text(
                 'Berhasil Bergabung!',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 17,
                   fontWeight: FontWeight.w800,
                   color: AppColors.textPrimary,
                 ),
@@ -105,10 +105,10 @@ class _StudentJoinSchoolScreenState
               const SizedBox(height: 12),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(14),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppColors.background,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: AppColors.border),
                 ),
                 child: Column(
@@ -122,13 +122,13 @@ class _StudentJoinSchoolScreenState
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
                     const Text(
                       'Status: Terdaftar di Sekolah',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF059669),
+                        color: AppColors.success,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -142,7 +142,7 @@ class _StudentJoinSchoolScreenState
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 18),
               AppButton(
                 text: 'Mulai Masuk Beranda',
                 onPressed: () {
@@ -175,17 +175,17 @@ class _StudentJoinSchoolScreenState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: AppColors.infoLight,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: AppColors.infoBorder),
                   ),
                   child: const Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.shield_outlined, color: AppColors.info, size: 22),
-                      SizedBox(width: 12),
+                      Icon(Icons.shield_outlined, color: AppColors.info, size: 20),
+                      SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           'Data laporan dan aspirasi Anda hanya akan terhubung dengan Guru BK di sekolah ini. Identitas Anda dijaga secara ketat dan aman.',

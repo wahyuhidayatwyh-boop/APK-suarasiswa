@@ -25,10 +25,11 @@ class SuaraSiswaTopBar extends ConsumerWidget implements PreferredSizeWidget {
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
-      titleSpacing: 20,
+      scrolledUnderElevation: 0,
+      titleSpacing: 18,
       leading: (showBack || Navigator.of(context).canPop())
           ? IconButton(
-              icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+              icon: const Icon(Icons.arrow_back_rounded, color: AppColors.slate800),
               onPressed: () => Navigator.of(context).maybePop(),
             )
           : null,
@@ -55,7 +56,7 @@ class SuaraSiswaTopBar extends ConsumerWidget implements PreferredSizeWidget {
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
+              color: AppColors.slate900,
               letterSpacing: -0.3,
             ),
           ),
@@ -79,27 +80,14 @@ class SuaraSiswaTopBar extends ConsumerWidget implements PreferredSizeWidget {
                 ),
                 if (unreadCount > 0)
                   Positioned(
-                    top: 8,
-                    right: 8,
+                    top: 10,
+                    right: 10,
                     child: Container(
-                      padding: const EdgeInsets.all(3),
+                      width: 8,
+                      height: 8,
                       decoration: const BoxDecoration(
                         color: AppColors.primary,
                         shape: BoxShape.circle,
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 16,
-                        minHeight: 16,
-                      ),
-                      child: Text(
-                        unreadCount > 9 ? '9+' : '$unreadCount',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
-                          height: 1,
-                        ),
                       ),
                     ),
                   ),
@@ -118,13 +106,13 @@ class SuaraSiswaTopBar extends ConsumerWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.only(right: 16, left: 4),
               child: InkWell(
                 onTap: onAvatarTap,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(18),
                 child: Container(
-                  width: 34,
-                  height: 34,
+                  width: 32,
+                  height: 32,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: const Color(0xFFE2E8F0), width: 1.5),
+                    border: Border.all(color: AppColors.borderStrong, width: 1.2),
                     color: AppColors.lightRed,
                   ),
                   child: ClipOval(
@@ -144,7 +132,7 @@ class SuaraSiswaTopBar extends ConsumerWidget implements PreferredSizeWidget {
       ],
       bottom: const PreferredSize(
         preferredSize: Size.fromHeight(1),
-        child: Divider(height: 1, thickness: 1, color: Color(0xFFF1F5F9)),
+        child: Divider(height: 1, thickness: 1, color: AppColors.borderStrong),
       ),
     );
   }
@@ -154,7 +142,7 @@ class SuaraSiswaTopBar extends ConsumerWidget implements PreferredSizeWidget {
       child: Text(
         name.isNotEmpty ? name[0].toUpperCase() : 'S',
         style: const TextStyle(
-          fontSize: 14,
+          fontSize: 13,
           fontWeight: FontWeight.w700,
           color: AppColors.primary,
         ),

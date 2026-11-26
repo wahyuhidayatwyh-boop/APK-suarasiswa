@@ -32,7 +32,7 @@ class _ReportDetailScreenState extends ConsumerState<ReportDetailScreen> {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
         return SafeArea(
@@ -108,7 +108,7 @@ class _ReportDetailScreenState extends ConsumerState<ReportDetailScreen> {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
         return SafeArea(
@@ -677,13 +677,13 @@ class _ReportDetailScreenState extends ConsumerState<ReportDetailScreen> {
                     const SizedBox(height: 10),
                   ],
 
-                  // ─── 7. Chat Action Button (Pill Button) ─────────────────────
+                  // ─── 7. Chat Action Button ────────────────────────────────────
                   AppButton(
                     text: 'Buka Percakapan / Konseling',
                     icon: const Icon(Icons.chat_bubble_outline_rounded,
                         size: 17, color: Colors.white),
-                    height: 46,
-                    borderRadius: 23,
+                    height: 44,
+                    borderRadius: 12,
                     onPressed: () {
                       final chatRoute = isCounselor
                           ? '/counselor/reports/${report.id}/chat'

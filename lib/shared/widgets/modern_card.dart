@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 
@@ -28,7 +27,7 @@ class ModernCard extends StatefulWidget {
     this.variant = ModernCardVariant.elevated,
     this.padding,
     this.margin,
-    this.borderRadius = 20,
+    this.borderRadius = 16,
     this.onTap,
     this.customBorder,
     this.width,
@@ -54,8 +53,14 @@ class _ModernCardState extends State<ModernCard> {
           color: Colors.white,
           borderRadius: br,
           border: widget.customBorder ??
-              Border.all(color: const Color(0xFFF1F5F9), width: 1.2),
-          boxShadow: AppColors.elevation2,
+              Border.all(color: AppColors.borderStrong, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.slate900.withOpacity(0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
         );
         break;
       case ModernCardVariant.flat:
@@ -63,17 +68,16 @@ class _ModernCardState extends State<ModernCard> {
           color: Colors.white,
           borderRadius: br,
           border: widget.customBorder ??
-              Border.all(color: const Color(0xFFF1F5F9), width: 1),
-          boxShadow: AppColors.elevation1,
+              Border.all(color: AppColors.borderStrong, width: 1),
         );
         break;
       case ModernCardVariant.glass:
         decoration = BoxDecoration(
-          color: Colors.white.withOpacity(0.85),
+          color: Colors.white,
           borderRadius: br,
           border: widget.customBorder ??
-              Border.all(color: Colors.white.withOpacity(0.7), width: 1.5),
-          boxShadow: AppColors.elevation2,
+              Border.all(color: AppColors.borderStrong, width: 1),
+          boxShadow: AppColors.elevation1,
         );
         break;
       case ModernCardVariant.dark:
@@ -81,8 +85,14 @@ class _ModernCardState extends State<ModernCard> {
           gradient: AppColors.darkCardGradient,
           borderRadius: br,
           border: widget.customBorder ??
-              Border.all(color: AppColors.darkBorder.withOpacity(0.8), width: 1.2),
-          boxShadow: AppColors.darkCardShadow,
+              Border.all(color: AppColors.darkBorder, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.18),
+              blurRadius: 14,
+              offset: const Offset(0, 4),
+            ),
+          ],
         );
         break;
       case ModernCardVariant.crimson:
@@ -90,32 +100,28 @@ class _ModernCardState extends State<ModernCard> {
           gradient: AppColors.crimsonCardGradient,
           borderRadius: br,
           border: widget.customBorder ??
-              Border.all(color: Colors.white.withOpacity(0.2), width: 1.2),
-          boxShadow: AppColors.redCardShadow,
+              Border.all(color: Colors.white.withOpacity(0.15), width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withOpacity(0.18),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
         );
         break;
     }
 
-    Widget content = Container(
+    final content = Container(
       width: widget.width,
       height: widget.height,
       padding: widget.padding ?? const EdgeInsets.all(16),
       child: widget.child,
     );
 
-    if (widget.variant == ModernCardVariant.glass) {
-      content = ClipRRect(
-        borderRadius: br,
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-          child: content,
-        ),
-      );
-    }
-
-    Widget cardWidget = AnimatedScale(
-      scale: _isPressed && widget.onTap != null ? 0.98 : 1.0,
-      duration: const Duration(milliseconds: 120),
+    final cardWidget = AnimatedScale(
+      scale: _isPressed && widget.onTap != null ? 0.985 : 1.0,
+      duration: const Duration(milliseconds: 100),
       curve: Curves.easeInOut,
       child: Container(
         margin: widget.margin,

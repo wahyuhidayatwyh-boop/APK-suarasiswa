@@ -39,13 +39,13 @@ class EducationDetailScreen extends ConsumerWidget {
                   // Banner / Cover Image
                   if (content.imageUrl != null && content.imageUrl!.isNotEmpty)
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(14),
                       child: Container(
                         width: double.infinity,
                         height: 160,
                         decoration: BoxDecoration(
                           color: const Color(0xFFF1F5F9),
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(14),
                         ),
                         child: Image.network(
                           content.imageUrl!,
@@ -244,7 +244,7 @@ class EducationDetailScreen extends ConsumerWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Center(
         child: Column(
